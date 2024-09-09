@@ -1,0 +1,25 @@
+.bookmark {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 59px;
+	height: 59px;
+	border: none;
+	background: #f9f9f9;
+	border-radius: 35.0889px;
+}
+
+.bookmark svg {
+	width: 25px;
+	height: 25px;
+}
+
+.floaty {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+}
+
+.active {
+	background-color: rgba(251, 215, 178, 0.3);
+}
