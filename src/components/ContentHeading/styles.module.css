@@ -1,0 +1,26 @@
+.heading,
+.description {
+	text-align: center;
+	font-style: normal;
+	font-weight: 400;
+}
+
+.heading {
+	color: var(--font-color-primary);
+	font-size: 2rem;
+	line-height: normal;
+	margin-bottom: 2.5rem;
+}
+
+.description {
+	color: var(--font-color-ternary);
+	font-size: 16px;
+	line-height: normal;
+}
+
+@media (max-width: 480px) {
+	.heading {
+		font-size: 1.5rem;
+		margin-bottom: 2rem;
+	}
+}
