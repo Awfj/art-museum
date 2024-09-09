@@ -1,0 +1,43 @@
+.container {
+	padding-inline: 16.4%;
+}
+
+.content {
+	display: flex;
+	gap: var(--section-gap);
+	margin-block: var(--section-gap);
+}
+
+.vertical {
+	flex-direction: column;
+}
+
+.fixed-region {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding-block: 2rem;
+	gap: 2rem;
+}
+
+@media (max-width: 1440px) {
+	.container {
+		padding-inline: 12%;
+	}
+}
+
+@media (max-width: 960px) {
+	.container {
+		padding-inline: 8%;
+	}
+}
+
+@media (max-width: 480px) {
+	.container {
+		padding-inline: 5%;
+	}
+
+	.fixed-region {
+		padding-block: 1rem;
+	}
+}
