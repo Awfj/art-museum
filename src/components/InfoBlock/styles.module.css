@@ -1,0 +1,77 @@
+.floaty {
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	transform: translateX(-50%);
+	width: 86%;
+	height: 132px;
+}
+
+.floaty.info-block {
+	background-color: white;
+	border: 1px solid #f0f1f1;
+	padding: 17px 24px;
+}
+
+.info-block {
+	display: grid;
+	grid-template-columns: calc(100% - 59px - 1rem) 59px;
+	gap: 1rem;
+	justify-content: space-between;
+	align-items: center;
+	overflow: hidden;
+}
+
+.title,
+.artist,
+.domainType {
+	line-height: 26.317px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.fixed .title,
+.fixed .artist,
+.fixed .domainType {
+	font-family: Inter;
+}
+
+.artist,
+.domainType {
+	font-size: 15.3514px;
+	letter-spacing: -0.154px;
+}
+
+.title {
+	color: var(--font-color-primary);
+	font-weight: 500;
+	font-size: 17.5444px;
+	letter-spacing: -0.526px;
+}
+
+.floaty .title {
+	margin-bottom: 5px;
+}
+
+.fixed .title {
+	margin-top: 3px;
+	margin-bottom: 2px;
+}
+
+.artist {
+	color: var(--font-color-ternary);
+	font-weight: 400;
+	margin-bottom: 10px;
+}
+
+.domain-type {
+	color: var(--font-color-primary);
+	font-weight: 700;
+}
+
+@media (max-width: 480px) {
+	.floaty {
+		width: 80%;
+	}
+}
