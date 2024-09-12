@@ -42,3 +42,7 @@ export interface ArtworkSearchResponse {
 	};
 	description: string;
 }
+
+export interface ArtApiTokenResponse {
+	token: string;
+}
