@@ -1,0 +1,26 @@
+.normal {
+	position: relative;
+	padding-bottom: 70px;
+	justify-self: center;
+}
+
+.normal img {
+	width: 100%;
+	min-height: 444px;
+	object-fit: cover;
+}
+
+.small {
+	display: grid;
+	gap: 1rem;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	padding: 17px 12px;
+	border: 1px solid #f0f1f1;
+	background: var(--Gray-White, #fff);
+}
+
+.small img {
+	width: 80px;
+	height: 80px;
+}
