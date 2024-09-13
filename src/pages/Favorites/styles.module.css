@@ -1,0 +1,11 @@
+.word-emphasis {
+	color: var(--font-color-secondary);
+}
+
+.word-emphasis > svg {
+	width: 60px;
+	height: 60px;
+	vertical-align: middle;
+	margin-right: 0.6875rem;
+	margin-top: -0.5rem;
+}
