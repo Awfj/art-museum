@@ -1,0 +1,43 @@
+.cards {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 2rem;
+}
+
+.footer {
+	margin-top: 22px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.sorting {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	font-size: 1.2rem;
+}
+
+.sorting svg {
+	background-color: transparent;
+}
+
+@media (max-width: 960px) {
+	.cards {
+		grid-template-columns: repeat(2, auto);
+	}
+}
+
+@media (max-width: 640px) {
+	.cards {
+		grid-template-columns: repeat(1, auto);
+		gap: 1rem;
+	}
+	.footer {
+		gap: 1rem;
+		flex-direction: column;
+	}
+}
+
+@media (max-width: 480px) {
+}
