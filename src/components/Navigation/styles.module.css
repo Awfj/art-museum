@@ -1,0 +1,28 @@
+.nav {
+	display: flex;
+	gap: 29px;
+}
+
+.home svg {
+	width: 24px;
+	height: 24px;
+}
+
+.link {
+	font-size: 16px;
+	color: #fff;
+	display: flex;
+	gap: 5px;
+	align-items: center;
+	font-family: 'Inter', sans-serif;
+	line-height: normal;
+	transition: color 0.3s ease-in-out;
+}
+
+.link:hover {
+	color: var(--font-color-ternary);
+}
+
+.favorites svg path {
+	stroke: var(--font-color-ternary);
+}
