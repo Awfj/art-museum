@@ -132,3 +132,24 @@ export const sortArtworksByTitleAsc = createAction(
 export const sortArtworksByTitleDesc = createAction(
 	'artworks/sortArtworksByTitleDesc'
 );
+
+export const sortArtworks = (state: ArtworkState, compareFn: (a: Artwork, b: Artwork) => number) => {
+	let artworksWithoutFavorites = state.artworks;
+	if (state.favorites.length > 0) {
+		artworksWithoutFavorites = state.artworks.slice(0, -state.favorites.length);
+	}
+	artworksWithoutFavorites.sort(compareFn);
+	state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+};
+
+export const updateArtworksWithFavorites = (artworks: Artwork[], favorites: Artwork[]) => {
+	// Set favorite property to true for favorite artworks
+	artworks.forEach((artwork) => {
+		const isFavorite = favorites.some((favorite) => favorite.id === artwork.id);
+		if (isFavorite) {
+			artwork.favorite = true;
+		}
+	});
+	// For correct toggle of favorites
+	return [...artworks, ...favorites];
+};

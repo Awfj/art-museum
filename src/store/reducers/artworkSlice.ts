@@ -3,8 +3,10 @@ import {
 	fetchArtworks,
 	searchArtworks,
 	setFavorite,
+	sortArtworks,
 	sortArtworksByTitleAsc,
 	sortArtworksByTitleDesc,
+	updateArtworksWithFavorites
 } from '@/store/actions/artworks';
 import { Status } from '@/types/api';
 import { Artwork } from '@/types/artwork';
@@ -48,20 +50,10 @@ export const artworkSlice = createSlice({
 			})
 			// cases for sorting artworks
 			.addCase(sortArtworksByTitleAsc, (state) => {
-				const artworksWithoutFavorites = state.artworks.slice(
-					0,
-					-state.favorites.length
-				);
-				artworksWithoutFavorites.sort((a, b) => a.title.localeCompare(b.title));
-				state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+				sortArtworks(state, (a, b) => a.title.localeCompare(b.title));
 			})
 			.addCase(sortArtworksByTitleDesc, (state) => {
-				const artworksWithoutFavorites = state.artworks.slice(
-					0,
-					-state.favorites.length
-				);
-				artworksWithoutFavorites.sort((a, b) => b.title.localeCompare(a.title));
-				state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+				sortArtworks(state, (a, b) => b.title.localeCompare(a.title));
 			})
 			// cases for fetchArtworks
 			.addCase(fetchArtworks.pending, (state) => {
@@ -70,17 +62,8 @@ export const artworkSlice = createSlice({
 			.addCase(fetchArtworks.fulfilled, (state, action) => {
 				state.status = Status.Succeeded;
 				state.artworks = action.payload;
-				// set favorite property to true for favorite artworks
-				state.artworks.forEach((artwork) => {
-					const isFavorite = state.favorites.some(
-						(favorite) => favorite.id === artwork.id
-					);
-					if (isFavorite) {
-						artwork.favorite = true;
-					}
-				});
-				// for correct toggle of favorites
-				state.artworks = [...state.artworks, ...state.favorites];
+				state.artworks = action.payload;
+				state.artworks = updateArtworksWithFavorites(state.artworks, state.favorites);
 			})
 			.addCase(fetchArtworks.rejected, (state, action) => {
 				state.status = Status.Failed;
@@ -95,7 +78,8 @@ export const artworkSlice = createSlice({
 				searchArtworks.fulfilled,
 				(state, action: PayloadAction<Artwork[]>) => {
 					state.status = Status.Succeeded;
-					state.artworks = [...action.payload, ...state.favorites];
+					state.artworks = action.payload;
+					state.artworks = updateArtworksWithFavorites(state.artworks, state.favorites);
 				}
 			)
 			.addCase(searchArtworks.rejected, (state, action) => {
