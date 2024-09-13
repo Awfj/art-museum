@@ -4,9 +4,14 @@
 	align-items: center;
 	width: 59px;
 	height: 59px;
-	border: none;
+	border: 1px solid transparent;
 	background: #f9f9f9;
 	border-radius: 35.0889px;
+	transition: border-color 0.3s ease-in-out;
+}
+
+.bookmark:hover {
+	border: 1px solid var(--font-color-primary);
 }
 
 .bookmark svg {
@@ -22,4 +27,8 @@
 
 .favorite {
 	background-color: rgba(251, 215, 178, 0.3);
+}
+
+.favorite svg {
+	fill: var(--font-color-secondary);
 }
