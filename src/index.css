@@ -2,51 +2,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-  --font-color-primary: #393939;
-  --font-color-secondary: #F17900;
-  --font-color-ternary: #E0A449;
-  --background-color-primary: #FAFAFA;
+	--font-color-primary: #393939;
+	--font-color-secondary: #f17900;
+	--font-color-ternary: #e0a449;
+	--background-color-primary: #fafafa;
 
-  --section-gap: 7.5rem;
+	--section-gap: 7.5rem;
 }
 
-
 * {
-  box-sizing: border-box;
-  font-family: "Lexend Deca", sans-serif;
-  font-style: normal;
+	box-sizing: border-box;
+	font-family: 'Lexend Deca', sans-serif;
+	font-style: normal;
+}
+
+#root {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 
 body {
-  margin: 0;
-  background-color: var(--background-color-primary);
+	margin: 0;
+	background-color: var(--background-color-primary);
 }
 
 a {
-  text-decoration: none;
+	text-decoration: none;
 }
 
 p,
 h1,
 h2,
 h3 {
-  margin: 0;
+	margin: 0;
+}
+
+button {
+	cursor: pointer;
+	transition: all 0.3s ease-in-out;
+	border: none;
+	background-color: transparent;
+	display: flex;
+}
+
+.no-scroll {
+	overflow: hidden;
 }
 
 @media (max-width: 960px) {
-  :root {
-    --section-gap: 5.625rem;
-  }
+	:root {
+		--section-gap: 5.625rem;
+	}
 }
 
 @media (max-width: 640px) {
-  :root {
-    --section-gap: 3.75rem;
-  }
+	:root {
+		--section-gap: 3.75rem;
+	}
 }
 
 @media (max-width: 480px) {
-  :root {
-    --section-gap: 1.875rem;
-  }
+	:root {
+		--section-gap: 1.875rem;
+	}
 }
