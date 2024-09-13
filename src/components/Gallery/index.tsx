@@ -21,6 +21,7 @@ import { AppDispatch } from '@/types/store';
 export default function Gallery() {
 	const [artworksPerPage, setArtworksPerPage] = useState(ARTWORKS_PER_PAGE);
 	const contentHeadingRef = useRef<HTMLDivElement>(null);
+	const [userInitiated, setUserInitiated] = useState(false);
 
 	const dispatch: AppDispatch = useDispatch();
 	const favoritesCount = useSelector(
@@ -36,6 +37,7 @@ export default function Gallery() {
 	const currentWorks = artworks.slice(firstWorkIndex, lastWorkIndex);
 
 	const handlePageChange = (pageNumber: number) => {
+		setUserInitiated(true);
 		setCurrentPage(pageNumber);
 	};
 
@@ -69,10 +71,15 @@ export default function Gallery() {
 	}, [artworksPerPage]);
 
 	useEffect(() => {
-		if (window.innerWidth <= 640 && contentHeadingRef.current) {
+		if (
+			userInitiated &&
+			window.innerWidth <= 640 &&
+			contentHeadingRef.current
+		) {
 			contentHeadingRef.current.scrollIntoView({ behavior: 'smooth' });
+			setUserInitiated(false);
 		}
-	}, [currentPage]);
+	}, [currentPage, userInitiated]);
 
 	if (artworks.length === 0) {
 		return null;
