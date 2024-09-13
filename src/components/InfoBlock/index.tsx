@@ -1,7 +1,7 @@
 import styles from './styles.module.css';
 
 import Bookmark from '@/components/Bookmark';
-import { Artwork } from '@/types/artworkTypes';
+import { Artwork } from '@/types/artwork';
 
 type InfoBlockProps = {
 	artwork: Artwork;
