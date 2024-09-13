@@ -1,0 +1,17 @@
+.text-button {
+	padding: 1rem;
+	background-color: var(--font-color-secondary);
+	color: white;
+	font-size: 1.5rem;
+	border-radius: 4px;
+}
+
+.text-button:hover {
+	background-color: var(--font-color-ternary);
+}
+
+@media (max-width: 640px) {
+	.text-button {
+		font-size: 1.2rem;
+	}
+}
