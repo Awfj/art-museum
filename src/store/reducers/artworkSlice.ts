@@ -41,6 +41,7 @@ export const artworkSlice = createSlice({
 					} else {
 						foundArtwork.favorite = true;
 						state.favorites.push(foundArtwork);
+						state.artworks.push(foundArtwork);
 					}
 					localStorage.setItem('favorites', JSON.stringify(state.favorites));
 				}
