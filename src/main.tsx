@@ -1,5 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import { ErrorBoundary } from 'react-error-boundary';
 import { Provider } from 'react-redux';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
@@ -15,16 +16,34 @@ import Home from '@/pages/Home/';
 const router = createBrowserRouter([
 	{
 		path: '/',
-		element: <Home />,
+		element: (
+			<ErrorBoundary FallbackComponent={Error}>
+				<Home />
+			</ErrorBoundary>
+		),
 		errorElement: <Error />,
 	},
 	{
 		path: '/favorites',
-		element: <Favorites />,
+		element: (
+			<ErrorBoundary FallbackComponent={Error}>
+				<Favorites />
+			</ErrorBoundary>
+		),
+		errorElement: <Error />,
 	},
 	{
 		path: '/detail-info/:id',
-		element: <DetailInfo />,
+		element: (
+			<ErrorBoundary FallbackComponent={Error}>
+				<DetailInfo />
+			</ErrorBoundary>
+		),
+		errorElement: <Error />,
+	},
+	{
+		path: '*',
+		element: <Error />,
 	},
 ]);
 
