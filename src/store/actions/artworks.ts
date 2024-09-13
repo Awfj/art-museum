@@ -11,10 +11,6 @@ import { ArtworkState } from '@/types/store';
 import { extractArtistName, getArtsyToken } from '@/utils/artApi';
 import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 
-export const setFavorite = createAction<{
-	artwork: Artwork;
-}>('artwork/setFavorite');
-
 export const fetchArtworks = createAsyncThunk(
 	'artwork/fetchArtworks',
 	async () => {
@@ -125,3 +121,14 @@ export const getArtworkById = (
 		(artwork: Artwork) => artwork.id.toString() === id
 	);
 };
+
+export const setFavorite = createAction<{
+	artwork: Artwork;
+}>('artwork/setFavorite');
+
+export const sortArtworksByTitleAsc = createAction(
+	'artworks/sortArtworksByTitleAsc'
+);
+export const sortArtworksByTitleDesc = createAction(
+	'artworks/sortArtworksByTitleDesc'
+);

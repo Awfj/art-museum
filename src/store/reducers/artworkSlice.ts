@@ -2,6 +2,9 @@ import {
 	fetchArtworkById,
 	fetchArtworks,
 	searchArtworks,
+	setFavorite,
+	sortArtworksByTitleAsc,
+	sortArtworksByTitleDesc,
 } from '@/store/actions/artworks';
 import { Status } from '@/types/api';
 import { Artwork } from '@/types/artwork';
@@ -20,27 +23,45 @@ const initialState: ArtworkState = {
 export const artworkSlice = createSlice({
 	name: 'artwork',
 	initialState,
-	reducers: {
-		setFavorite: (state, action: PayloadAction<{ artwork: Artwork }>) => {
-			const artwork = action.payload.artwork;
-			const foundArtwork = state.artworks.find((art) => art.id === artwork.id);
-
-			if (foundArtwork) {
-				if (artwork.favorite) {
-					foundArtwork.favorite = false;
-					state.favorites = state.favorites.filter(
-						(favorite) => favorite.id !== foundArtwork.id
-					);
-				} else {
-					foundArtwork.favorite = true;
-					state.favorites.push(foundArtwork);
-				}
-				localStorage.setItem('favorites', JSON.stringify(state.favorites));
-			}
-		},
-	},
+	reducers: {},
 	extraReducers: (builder) => {
 		builder
+			.addCase(setFavorite, (state, action) => {
+				const artwork = action.payload.artwork;
+				const foundArtwork = state.artworks.find(
+					(art) => art.id === artwork.id
+				);
+
+				if (foundArtwork) {
+					if (foundArtwork.favorite) {
+						foundArtwork.favorite = false;
+						state.favorites = state.favorites.filter(
+							(favorite) => favorite.id !== foundArtwork.id
+						);
+					} else {
+						foundArtwork.favorite = true;
+						state.favorites.push(foundArtwork);
+					}
+					localStorage.setItem('favorites', JSON.stringify(state.favorites));
+				}
+			})
+			// cases for sorting artworks
+			.addCase(sortArtworksByTitleAsc, (state) => {
+				const artworksWithoutFavorites = state.artworks.slice(
+					0,
+					-state.favorites.length
+				);
+				artworksWithoutFavorites.sort((a, b) => a.title.localeCompare(b.title));
+				state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+			})
+			.addCase(sortArtworksByTitleDesc, (state) => {
+				const artworksWithoutFavorites = state.artworks.slice(
+					0,
+					-state.favorites.length
+				);
+				artworksWithoutFavorites.sort((a, b) => b.title.localeCompare(a.title));
+				state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+			})
 			// cases for fetchArtworks
 			.addCase(fetchArtworks.pending, (state) => {
 				state.status = Status.Loading;
