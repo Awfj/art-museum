@@ -1,11 +1,11 @@
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { SearchIcon } from 'lucide-react';
 import { object, string } from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import styles from './styles.module.css';
 
-import SearchIcon from '@/assets/search.svg';
 import PageHeading from '@/components/PageHeading';
 import { debouncedSubmit } from '@/utils/form';
 

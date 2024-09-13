@@ -21,6 +21,10 @@
 	width: 100%;
 }
 
+.search > p {
+	margin-top: 0.3rem;
+}
+
 .form-input {
 	flex-grow: 1;
 	border-radius: 16px 0 0 16px;
@@ -40,11 +44,19 @@
 }
 
 .form-button {
-	cursor: pointer;
-	vertical-align: middle;
-	margin-inline: 1rem;
-	padding: 0;
-	border: none;
+	padding-inline: 1rem;
+	border-radius: 0 16px 16px 0;
+	align-items: center;
+}
+
+.form-button svg {
+	width: 32px;
+	height: 32px;
+}
+
+.form-button:hover {
+	background-color: var(--font-color-secondary);
+	color: white;
 }
 
 @media (max-width: 480px) {
