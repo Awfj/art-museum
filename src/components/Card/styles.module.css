@@ -6,7 +6,7 @@
 
 .normal img {
 	width: 100%;
-	min-height: 444px;
+	height: 444px;
 	object-fit: cover;
 }
 
