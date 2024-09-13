@@ -41,7 +41,7 @@ h3 {
 
 button {
 	cursor: pointer;
-	transition: all 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
 	border: none;
 	background-color: transparent;
 	display: flex;
@@ -49,6 +49,10 @@ button {
 
 .no-scroll {
 	overflow: hidden;
+}
+
+.hidden {
+	visibility: hidden;
 }
 
 @media (max-width: 960px) {
