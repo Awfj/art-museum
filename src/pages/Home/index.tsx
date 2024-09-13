@@ -26,7 +26,7 @@ export default function Home() {
 	}
 
 	if (status === Status.Failed) {
-		return <div>Error: {error}</div>;
+		throw new Error(error);
 	}
 
 	return (
