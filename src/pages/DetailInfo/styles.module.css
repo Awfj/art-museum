@@ -1,0 +1,95 @@
+.image-container {
+	position: relative;
+}
+
+.image-container img {
+	width: 100%;
+}
+
+.detailes-info {
+	display: flex;
+	gap: 5rem;
+}
+
+.details {
+	width: 60%;
+}
+
+.details h2 {
+	color: var(--font-color-primary);
+	font-size: 2rem;
+	font-weight: 400;
+	line-height: normal;
+	margin-bottom: 1.6875rem;
+}
+
+.overview h2 {
+	margin-bottom: 2rem;
+}
+
+.info p:not(:last-child) {
+	margin-bottom: 11px;
+}
+
+.overview p:not(:last-child) {
+	margin-bottom: 17px;
+}
+
+.info {
+	margin-bottom: 10.75rem;
+}
+
+.artist {
+	color: var(--font-color-ternary);
+	font-size: 24px;
+	line-height: normal;
+}
+
+.overview p {
+	color: var(--font-color-primary);
+	font-size: 16px;
+}
+
+.overview span {
+	color: var(--font-color-ternary);
+}
+
+.date {
+	color: var(--font-color-primary);
+	font-size: 16px;
+	font-weight: 700;
+	line-height: normal;
+}
+
+@media (max-width: 1440px) {
+	.info {
+		margin-bottom: 3rem;
+	}
+}
+
+@media (max-width: 960px) {
+	.info {
+		margin-bottom: 2rem;
+	}
+
+	.details {
+		width: 100%;
+	}
+}
+
+@media (max-width: 768px) {
+	.detailes-info {
+		flex-direction: column;
+		gap: 1rem;
+	}
+}
+
+@media (max-width: 640px) {
+	.info {
+		margin-bottom: 2rem;
+	}
+
+	.details h2 {
+		margin-bottom: 1.3rem;
+	}
+}
