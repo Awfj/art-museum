@@ -27,9 +27,11 @@ export default function Gallery() {
 	const favoritesCount = useSelector(
 		(state: RootState) => state.artworks.favorites
 	).length;
-	const artworks = useSelector((state: RootState) => state.artworks.artworks)
-		.slice(0, -favoritesCount)
-		.slice(0, ARTWORKS_IN_GALLERY);
+	let artworks = useSelector((state: RootState) => state.artworks.artworks);
+	if (favoritesCount > 0) {
+		artworks = artworks.slice(0, -favoritesCount);
+	}
+	artworks = artworks.slice(0, ARTWORKS_IN_GALLERY);
 	const [currentPage, setCurrentPage] = useState(1);
 
 	const lastWorkIndex = currentPage * artworksPerPage;

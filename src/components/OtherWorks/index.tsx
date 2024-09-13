@@ -9,9 +9,11 @@ export default function OtherWorks() {
 	const favoritesCount = useSelector(
 		(state: RootState) => state.artworks.favorites
 	).length;
-	const artworks = useSelector((state: RootState) => state.artworks.artworks)
-		.slice(0, -favoritesCount)
-		.slice(ARTWORKS_IN_GALLERY, ARTWORKS_TOTAL);
+	let artworks = useSelector((state: RootState) => state.artworks.artworks);
+	if (favoritesCount > 0) {
+		artworks = artworks.slice(0, -favoritesCount);
+	}
+	artworks = artworks.slice(ARTWORKS_IN_GALLERY, ARTWORKS_TOTAL);
 
 	if (artworks.length === 0) {
 		return null;
