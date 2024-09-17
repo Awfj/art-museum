@@ -1,6 +1,6 @@
 import { ArtworkResponse, ArtworkSearchResponse } from '@/types/artApi';
 import { Artwork } from '@/types/artwork';
-import { RootState } from '@/types/store';
+import { ArtworkState, RootState } from '@/types/store';
 import { extractArtistName } from '@/utils/artApi';
 
 export function transformArtworks(
