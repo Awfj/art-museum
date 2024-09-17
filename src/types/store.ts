@@ -8,6 +8,10 @@ export type AppDispatch = typeof store.dispatch;
 export interface ArtworkState {
 	artworks: Artwork[];
 	favorites: Artwork[];
+	searching: boolean;
+	nextArtworksUrl: string | null;
+	lastViewedArtwork: Artwork | null;
+	page: number;
 	status: Status;
 	error?: string | null;
 }

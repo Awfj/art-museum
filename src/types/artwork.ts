@@ -10,4 +10,5 @@ export interface Artwork {
 	date?: string;
 	medium: string;
 	favorite: boolean;
+	page?: number;
 }
