@@ -1,9 +1,9 @@
 .footer {
-	background: #fff;
+	background-color: var(--background-color-lighter);
 }
 
 .footer svg > path:first-child {
-	fill: black;
+	fill: var(--color-primary);
 }
 
 @media (max-width: 30rem) {

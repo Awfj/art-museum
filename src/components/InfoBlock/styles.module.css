@@ -8,8 +8,8 @@
 }
 
 .floaty.info-block {
-	background-color: white;
-	border: 1px solid #f0f1f1;
+	background-color: var(--background-color-lighter);
+	border: 1px solid var(--background-color-dark);
 	padding: 1.0625rem 1.5rem;
 }
 
@@ -34,7 +34,7 @@
 .fixed .title,
 .fixed .artist,
 .fixed .domainType {
-	font-family: Inter;
+	font-family: var(--font-secondary);
 }
 
 .artist,
@@ -44,7 +44,7 @@
 }
 
 .title {
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 	font-weight: 500;
 	font-size: 1.096525rem;
 	letter-spacing: -0.032875rem;
@@ -60,13 +60,13 @@
 }
 
 .artist {
-	color: var(--font-color-ternary);
+	color: var(--color-ternary);
 	font-weight: 400;
 	margin-bottom: 0.625rem;
 }
 
 .domain-type {
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 	font-weight: 700;
 }
 

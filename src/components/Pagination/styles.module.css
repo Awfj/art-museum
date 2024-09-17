@@ -29,13 +29,13 @@
 }
 
 .page-numbers button:hover {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 }
 
 .page-numbers .active {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 	font-weight: 600;
 }
 

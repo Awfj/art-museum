@@ -5,6 +5,6 @@
 }
 
 .icon-button:hover {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 }

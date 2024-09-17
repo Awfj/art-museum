@@ -4,18 +4,18 @@
 	flex-direction: column;
 	align-items: center;
 	margin: 0 auto;
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 }
 
 .word-emphasis {
-	color: var(--font-color-secondary);
+	color: var(--color-secondary);
 }
 
 .search-form {
 	min-height: 4rem;
 	display: flex;
 	border-radius: 1rem;
-	background: rgba(57, 57, 57, 0.05);
+	background: var(--background-color-dark);
 	margin-top: 4.5rem;
 	max-width: 47.625rem;
 	width: 100%;
@@ -35,8 +35,9 @@
 }
 
 .form-input::placeholder {
-	color: rgba(57, 57, 57, 0.5);
-	font-family: Inter;
+	color: var(--color-primary);
+	opacity: 0.5;
+	font-family: var(--font-secondary);
 	font-size: 0.875rem;
 	font-weight: 400;
 	line-height: normal;
@@ -55,8 +56,8 @@
 }
 
 .form-button:hover {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 }
 
 @media (max-width: 30rem) {

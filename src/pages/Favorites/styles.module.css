@@ -1,5 +1,5 @@
 .word-emphasis {
-	color: var(--font-color-secondary);
+	color: var(--color-secondary);
 }
 
 .word-emphasis > svg {

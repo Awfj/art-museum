@@ -1,19 +1,19 @@
 .normal {
 	position: relative;
-	padding-bottom:  0.625rem;
+	padding-bottom: 0.625rem;
 	justify-self: center;
 }
 
 .normal,
 .small {
 	outline: 0.0625rem solid transparent;
-	transition: outline 0.3s ease-in-out;
+	transition: outline var(--transition);
 	cursor: pointer;
 }
 
 .normal:hover,
 .small:hover {
-	outline: 0.0625rem solid var(--font-color-primary);
+	outline: 0.0625rem solid var(--color-primary);
 }
 
 .normal img {
@@ -28,8 +28,8 @@
 	grid-template-columns: auto 1fr;
 	align-items: center;
 	padding: 1.0625rem 0.75rem;
-	border: 0.0625rem solid #f0f1f1;
-	background: var(--Gray-White, #fff);
+	border: 0.0625rem solid var(--background-color-dark);
+	background: var(--Gray-White, var(--background-color-lighter));
 }
 
 .small img {

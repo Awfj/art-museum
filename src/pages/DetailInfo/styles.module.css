@@ -16,7 +16,7 @@
 }
 
 .details h2 {
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 	font-size: 2rem;
 	font-weight: 400;
 	line-height: normal;
@@ -40,22 +40,22 @@
 }
 
 .artist {
-	color: var(--font-color-ternary);
+	color: var(--color-ternary);
 	font-size: 1.5rem;
 	line-height: normal;
 }
 
 .overview p {
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 	font-size: 1rem;
 }
 
 .overview span {
-	color: var(--font-color-ternary);
+	color: var(--color-ternary);
 }
 
 .date {
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 	font-size: 1rem;
 	font-weight: 700;
 	line-height: normal;

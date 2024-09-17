@@ -7,11 +7,11 @@
 	border: 0.0625rem solid transparent;
 	background: #f9f9f9;
 	border-radius: 2.1875rem;
-	transition: border-color 0.3s ease-in-out;
+	transition: border-color var(--transition);
 }
 
 .bookmark:hover {
-	border: 0.0625rem solid var(--font-color-primary);
+	border: 0.0625rem solid var(--color-primary);
 }
 
 .bookmark svg {
@@ -26,9 +26,9 @@
 }
 
 .favorite {
-	background-color: rgba(251, 215, 178, 0.3);
+	background-color: var(--background-color-light);
 }
 
 .favorite svg {
-	fill: var(--font-color-secondary);
+	fill: var(--color-secondary);
 }

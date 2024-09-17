@@ -3,10 +3,10 @@
 	aspect-ratio: 1;
 	border-radius: 50%;
 	background:
-		radial-gradient(farthest-side, var(--font-color-secondary) 94%, #0000)
+		radial-gradient(farthest-side, var(--color-secondary) 94%, var(--background-color-darker))
 			top/8px 8px no-repeat,
-		conic-gradient(#0000 30%, var(--font-color-secondary));
-	-webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 0.5rem), #000 0);
+		conic-gradient(var(--background-color-darker) 30%, var(--color-secondary));
+	-webkit-mask: radial-gradient(farthest-side, var(--background-color-darker) calc(100% - 0.5rem), var(--background-color-darker) 0);
 	animation: l13 1s infinite linear;
 }
 @keyframes l13 {

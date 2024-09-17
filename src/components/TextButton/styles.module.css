@@ -1,13 +1,13 @@
 .text-button {
 	padding: 1rem;
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 	font-size: 1.5rem;
 	border-radius: 0.25rem;
 }
 
 .text-button:hover {
-	background-color: var(--font-color-ternary);
+	background-color: var(--color-ternary);
 }
 
 @media (max-width: 40rem) {
