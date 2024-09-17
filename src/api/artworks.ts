@@ -1,11 +1,31 @@
 import { BASE_URL } from '@/constants/artApi';
 import { ARTWORKS_PER_PAGE } from '@/constants/artworks';
 import { ArtApiResponse, ArtApiSearchResponse } from '@/types/artApi';
-import { Artwork } from '@/types/artwork';
+import { ArtApiTokenResponse } from '@/types/artApi';
+
+export const getApiToken = async (): Promise<string> => {
+	const response = await fetch(`${BASE_URL}/tokens/xapp_token`, {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({
+			client_id: import.meta.env.VITE_ART_API_CLIENT_ID,
+			client_secret: import.meta.env.VITE_ART_API_CLIENT_SECRET,
+		}),
+	});
+
+	if (!response.ok) {
+		throw new Error('Failed to fetch token');
+	}
+
+	const data: ArtApiTokenResponse = await response.json();
+	return data.token;
+};
 
 export async function fetchUniqueArtworks(
 	token: string,
-	storedArtworks: Artwork[],
+	storedArtworkIds: Set<string>,
 	initialNextArtworksUrl: string | null
 ): Promise<[ArtApiResponse, string]> {
 	let dataContainsDuplicates: boolean;
@@ -24,8 +44,9 @@ export async function fetchUniqueArtworks(
 
 		data = await response.json();
 		const receivedArtworks = data._embedded.artworks;
-		dataContainsDuplicates = storedArtworks.some(
-			(artwork: Artwork) => artwork.id === receivedArtworks[0].id
+
+		dataContainsDuplicates = receivedArtworks.some((artwork) =>
+			storedArtworkIds.has(artwork.id)
 		);
 		nextArtworksUrl = data._links.next?.href;
 	} while (dataContainsDuplicates);
@@ -35,7 +56,7 @@ export async function fetchUniqueArtworks(
 
 export async function fetchUniqueSearchResults(
 	token: string,
-	storedArtworks: Artwork[],
+	storedArtworkIds: Set<string>,
 	initialNextArtworksUrl: string | null,
 	query?: string
 ): Promise<[ArtApiSearchResponse, string]> {
@@ -57,11 +78,10 @@ export async function fetchUniqueSearchResults(
 
 		data = await response.json();
 		const receivedArtworks = data._embedded.results;
-		dataContainsDuplicates = storedArtworks.some(
-			(artwork: Artwork) =>
-				artwork.title ===
-				receivedArtworks[0].title.split(',').slice(1).join(',')
-		);
+		dataContainsDuplicates = receivedArtworks.some((artwork) => {
+			const id = encodeURIComponent(artwork.title.split(' ').join('-'));
+			return storedArtworkIds.has(id);
+		});
 		nextArtworksUrl = data._links.next?.href;
 	} while (dataContainsDuplicates);
 
