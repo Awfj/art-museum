@@ -55,19 +55,19 @@ button {
 	visibility: hidden;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
 	:root {
 		--section-gap: 5.625rem;
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
 	:root {
 		--section-gap: 3.75rem;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	:root {
 		--section-gap: 1.875rem;
 	}

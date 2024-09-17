@@ -1,6 +1,6 @@
 .pagination {
 	display: flex;
-	gap: 21px;
+	gap: 1.3125rem;
 
 	justify-content: flex-end;
 	align-items: center;
@@ -15,17 +15,17 @@
 	justify-content: center;
 	align-items: center;
 
-	width: 30px;
-	height: 30px;
-	border-radius: 4px;
+	width: 1.875rem;
+	height: 1.875rem;
+	border-radius: 0.25rem;
 
-	font-size: 18px;
-	line-height: 24px;
+	font-size: 1.125rem;
+	line-height: 1.5rem;
 }
 
 .page-numbers {
 	display: flex;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
 .page-numbers button:hover {
@@ -39,7 +39,7 @@
 	font-weight: 600;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.pagination {
 		justify-content: center;
 	}

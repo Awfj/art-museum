@@ -4,18 +4,18 @@
 	bottom: 0;
 	transform: translateX(-50%);
 	width: 86%;
-	height: 132px;
+	height: 8.25rem;
 }
 
 .floaty.info-block {
 	background-color: white;
 	border: 1px solid #f0f1f1;
-	padding: 17px 24px;
+	padding: 1.0625rem 1.5rem;
 }
 
 .info-block {
 	display: grid;
-	grid-template-columns: calc(100% - 59px - 1rem) 59px;
+	grid-template-columns: calc(100% - 3.6875rem - 1rem) 3.6875rem;
 	gap: 1rem;
 	justify-content: space-between;
 	align-items: center;
@@ -25,7 +25,7 @@
 .title,
 .artist,
 .domainType {
-	line-height: 26.317px;
+	line-height: 1.6448125rem;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -39,30 +39,30 @@
 
 .artist,
 .domainType {
-	font-size: 15.3514px;
-	letter-spacing: -0.154px;
+	font-size: 0.9594625rem;
+	letter-spacing: -0.009625rem;
 }
 
 .title {
 	color: var(--font-color-primary);
 	font-weight: 500;
-	font-size: 17.5444px;
-	letter-spacing: -0.526px;
+	font-size: 1.096525rem;
+	letter-spacing: -0.032875rem;
 }
 
 .floaty .title {
-	margin-bottom: 5px;
+	margin-bottom: 0.3125rem;
 }
 
 .fixed .title {
-	margin-top: 3px;
-	margin-bottom: 2px;
+	margin-top: 0.1875rem;
+	margin-bottom: 0.125rem;
 }
 
 .artist {
 	color: var(--font-color-ternary);
 	font-weight: 400;
-	margin-bottom: 10px;
+	margin-bottom: 0.625rem;
 }
 
 .domain-type {
@@ -70,7 +70,7 @@
 	font-weight: 700;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.floaty {
 		width: 80%;
 	}

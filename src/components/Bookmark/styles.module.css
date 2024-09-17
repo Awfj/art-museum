@@ -2,27 +2,27 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 59px;
-	height: 59px;
-	border: 1px solid transparent;
+	width: 3.6875rem;
+	height: 3.6875rem;
+	border: 0.0625rem solid transparent;
 	background: #f9f9f9;
-	border-radius: 35.0889px;
+	border-radius: 2.1875rem;
 	transition: border-color 0.3s ease-in-out;
 }
 
 .bookmark:hover {
-	border: 1px solid var(--font-color-primary);
+	border: 0.0625rem solid var(--font-color-primary);
 }
 
 .bookmark svg {
-	width: 25px;
-	height: 25px;
+	width: 1.5625rem;
+	height: 1.5625rem;
 }
 
 .floaty {
 	position: absolute;
-	top: 16px;
-	right: 16px;
+	top: 1rem;
+	right: 1rem;
 }
 
 .favorite {

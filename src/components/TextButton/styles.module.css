@@ -3,14 +3,14 @@
 	background-color: var(--font-color-secondary);
 	color: white;
 	font-size: 1.5rem;
-	border-radius: 4px;
+	border-radius: 0.25rem;
 }
 
 .text-button:hover {
 	background-color: var(--font-color-ternary);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
 	.text-button {
 		font-size: 1.2rem;
 	}

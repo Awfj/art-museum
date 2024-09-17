@@ -14,11 +14,11 @@
 
 .description {
 	color: var(--font-color-ternary);
-	font-size: 16px;
+	font-size: 1rem;
 	line-height: normal;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.heading {
 		font-size: 1.5rem;
 		margin-bottom: 2rem;

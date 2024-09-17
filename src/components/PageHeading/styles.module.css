@@ -11,25 +11,25 @@
 	align-self: center;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 75rem) {
 	.page-heading {
 		font-size: 3.5rem;
 	}
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
 	.page-heading {
 		font-size: 2.5rem;
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
 	.page-heading {
 		font-size: 2rem;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.page-heading {
 		font-size: 2rem;
 	}

@@ -14,10 +14,10 @@
 .search-form {
 	min-height: 4rem;
 	display: flex;
-	border-radius: 16px;
+	border-radius: 1rem;
 	background: rgba(57, 57, 57, 0.05);
 	margin-top: 4.5rem;
-	max-width: 762px;
+	max-width: 47.625rem;
 	width: 100%;
 }
 
@@ -27,7 +27,7 @@
 
 .form-input {
 	flex-grow: 1;
-	border-radius: 16px 0 0 16px;
+	border-radius: 1rem 0 0 1rem;
 	padding: 1rem;
 	border: none;
 	background-color: transparent;
@@ -45,13 +45,13 @@
 
 .form-button {
 	padding-inline: 1rem;
-	border-radius: 0 16px 16px 0;
+	border-radius: 0 1rem 1rem 0;
 	align-items: center;
 }
 
 .form-button svg {
-	width: 32px;
-	height: 32px;
+	width: 2rem;
+	height: 2rem;
 }
 
 .form-button:hover {
@@ -59,7 +59,7 @@
 	color: white;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.search-form {
 		margin-top: 2rem;
 	}

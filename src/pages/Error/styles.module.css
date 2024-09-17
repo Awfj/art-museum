@@ -11,13 +11,13 @@
 	color: var(--font-color-primary);
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
 	.error {
 		font-size: 1.5rem;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.error {
 		font-size: 1.2rem;
 	}
