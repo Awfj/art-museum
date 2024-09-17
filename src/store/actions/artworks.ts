@@ -3,11 +3,11 @@ import {
 	fetchUniqueArtworks,
 	fetchUniqueSearchResults,
 } from '@/api/artworks';
+import { getApiToken } from '@/api/artworks';
 import { ArtworkResponse } from '@/types/artApi';
 import { Artwork } from '@/types/artwork';
 import { RootState } from '@/types/store';
 import { ArtworkState } from '@/types/store';
-import { getArtsyToken } from '@/utils/artApi';
 import {
 	getFavoriteIds,
 	transformArtworkData,
@@ -25,11 +25,14 @@ export const fetchArtworks = createAsyncThunk(
 			nextArtworksUrl: initialNextArtworksUrl,
 			favorites,
 		} = state.artworks;
-		const token = await getArtsyToken();
+		const storedArtworkIds = new Set(
+			storedArtworks.map((artwork) => artwork.id)
+		);
+		const token = await getApiToken();
 
 		const [data, nextArtworksUrl] = await fetchUniqueArtworks(
 			token,
-			storedArtworks,
+			storedArtworkIds,
 			initialNextArtworksUrl
 		);
 
@@ -56,11 +59,14 @@ export const searchArtworks = createAsyncThunk(
 			nextArtworksUrl: initialNextArtworksUrl,
 			favorites,
 		} = state.artworks;
-		const token = await getArtsyToken();
+		const storedArtworkIds = new Set(
+			storedArtworks.map((artwork) => artwork.id)
+		);
+		const token = await getApiToken();
 
 		const [data, nextArtworksUrl] = await fetchUniqueSearchResults(
 			token,
-			storedArtworks,
+			storedArtworkIds,
 			initialNextArtworksUrl,
 			query
 		);
@@ -79,7 +85,7 @@ export const searchArtworks = createAsyncThunk(
 export const fetchArtworkById = createAsyncThunk(
 	'artwork/fetchArtworkById',
 	async (id: string, { getState }) => {
-		const token = await getArtsyToken();
+		const token = await getApiToken();
 		const response = await fetchArtworkData(id, token);
 
 		if (!response.ok) {
@@ -98,12 +104,9 @@ export const getArtworkById = (
 	id: string
 ): Artwork | undefined => {
 	return (
-		state.favorites.find(
-			(artwork: Artwork) => artwork.id === encodeURIComponent(id)
-		) ||
-		state.artworks.find(
-			(artwork: Artwork) => artwork.id === encodeURIComponent(id)
-		)
+		state.favorites.find((artwork: Artwork) => artwork.id === id) ||
+		state.artworks.find((artwork: Artwork) => artwork.id === id) ||
+		state.lastViewedArtwork
 	);
 };
 
@@ -117,30 +120,3 @@ export const sortArtworksByTitleAsc = createAction(
 export const sortArtworksByTitleDesc = createAction(
 	'artworks/sortArtworksByTitleDesc'
 );
-
-export const sortArtworks = (
-	state: ArtworkState,
-	compareFn: (a: Artwork, b: Artwork) => number
-) => {
-	let artworksWithoutFavorites = state.artworks;
-	if (state.favorites.length > 0) {
-		artworksWithoutFavorites = state.artworks.slice(0, -state.favorites.length);
-	}
-	artworksWithoutFavorites.sort(compareFn);
-	state.artworks = [...artworksWithoutFavorites, ...state.favorites];
-};
-
-export const updateArtworksWithFavorites = (
-	artworks: Artwork[],
-	favorites: Artwork[]
-) => {
-	// Set favorite property to true for favorite artworks
-	artworks.forEach((artwork) => {
-		const isFavorite = favorites.some((favorite) => favorite.id === artwork.id);
-		if (isFavorite) {
-			artwork.favorite = true;
-		}
-	});
-	// For correct toggle of favorites
-	return [...artworks, ...favorites];
-};
