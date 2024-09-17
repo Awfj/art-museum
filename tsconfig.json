@@ -1,6 +1,7 @@
 {
 	"files": [],
 	"compilerOptions": {
+		"types": ["vitest/globals", "@testing-library/jest-dom"],
 		"jsx": "react-jsx",
 		"module": "es2020",
 		"allowSyntheticDefaultImports": true,
