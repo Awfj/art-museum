@@ -87,3 +87,15 @@ export function transformArtworkData(
 		favorite,
 	};
 }
+
+export const sortArtworks = (
+	state: ArtworkState,
+	compareFn: (a: Artwork, b: Artwork) => number
+) => {
+	let artworksWithoutFavorites = state.artworks;
+	if (state.favorites.length > 0) {
+		artworksWithoutFavorites = state.artworks.slice(0, -state.favorites.length);
+	}
+	artworksWithoutFavorites.sort(compareFn);
+	state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+};
