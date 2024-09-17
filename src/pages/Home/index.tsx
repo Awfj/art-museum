@@ -13,15 +13,17 @@ import { AppDispatch, RootState } from '@/types/store';
 export default function Home() {
 	const dispatch: AppDispatch = useDispatch();
 	const status = useSelector((state: RootState) => state.artworks.status);
+	const artworks = useSelector((state: RootState) => state.artworks.artworks);
 	const error = useSelector((state: RootState) => state.artworks.error);
+	const searching = useSelector((state: RootState) => state.artworks.searching);
 
 	useEffect(() => {
-		if (status === Status.Idle) {
-			dispatch(fetchArtworks());
+		if (artworks.length === 0) {
+			dispatch(fetchArtworks(1));
 		}
-	}, [status, dispatch]);
+	}, [dispatch, artworks]);
 
-	if (status === Status.Loading) {
+	if (status === Status.Loading && !searching && artworks.length === 0) {
 		return <LoadingScreen />;
 	}
 
