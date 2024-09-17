@@ -3,21 +3,26 @@ import {
 	fetchArtworks,
 	searchArtworks,
 	setFavorite,
-	sortArtworks,
 	sortArtworksByTitleAsc,
 	sortArtworksByTitleDesc,
-	updateArtworksWithFavorites
 } from '@/store/actions/artworks';
 import { Status } from '@/types/api';
 import { Artwork } from '@/types/artwork';
 import { ArtworkState } from '@/types/store';
+import { sortArtworks } from '@/utils/artworks';
+import LocalStorageService from '@/utils/LocalStorageService';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+const storedFavorites =
+	LocalStorageService.getItem<Artwork[]>('favorites') || [];
 
 const initialState: ArtworkState = {
-	artworks: storedFavorites,
+	artworks: [],
 	favorites: storedFavorites,
+	searching: false,
+	nextArtworksUrl: null,
+	lastViewedArtwork: null,
+	page: 1,
 	status: Status.Idle,
 	error: null,
 };
@@ -25,28 +30,39 @@ const initialState: ArtworkState = {
 export const artworkSlice = createSlice({
 	name: 'artwork',
 	initialState,
-	reducers: {},
+	reducers: {
+		setPage: (state, action: PayloadAction<number>) => {
+			state.page = action.payload;
+		},
+		resetNextArtworksUrl: (state) => {
+			state.nextArtworksUrl = null;
+		},
+		resetLastViewedArtwork: (state) => {
+			state.lastViewedArtwork = null;
+		},
+		clearArtworks: (state) => {
+			state.artworks = [];
+		},
+		initiateNewSearch: (state) => {
+			state.searching = true;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(setFavorite, (state, action) => {
 				const artwork = action.payload.artwork;
-				const foundArtwork = state.artworks.find(
+				const foundArtwork = state.favorites.find(
 					(art) => art.id === artwork.id
 				);
 
 				if (foundArtwork) {
-					if (foundArtwork.favorite) {
-						foundArtwork.favorite = false;
-						state.favorites = state.favorites.filter(
-							(favorite) => favorite.id !== foundArtwork.id
-						);
-					} else {
-						foundArtwork.favorite = true;
-						state.favorites.push(foundArtwork);
-						state.artworks.push(foundArtwork);
-					}
-					localStorage.setItem('favorites', JSON.stringify(state.favorites));
+					state.favorites = state.favorites.filter(
+						(favorite) => favorite.id !== foundArtwork.id
+					);
+				} else {
+					state.favorites.push(artwork);
 				}
+				LocalStorageService.setItem('favorites', state.favorites);
 			})
 			// cases for sorting artworks
 			.addCase(sortArtworksByTitleAsc, (state) => {
@@ -60,10 +76,10 @@ export const artworkSlice = createSlice({
 				state.status = Status.Loading;
 			})
 			.addCase(fetchArtworks.fulfilled, (state, action) => {
+				const [newArtworks, nextArtworksUrl] = action.payload;
 				state.status = Status.Succeeded;
-				state.artworks = action.payload;
-				state.artworks = action.payload;
-				state.artworks = updateArtworksWithFavorites(state.artworks, state.favorites);
+				state.artworks = [...state.artworks, ...newArtworks];
+				state.nextArtworksUrl = nextArtworksUrl;
 			})
 			.addCase(fetchArtworks.rejected, (state, action) => {
 				state.status = Status.Failed;
@@ -74,14 +90,12 @@ export const artworkSlice = createSlice({
 				state.status = Status.Loading;
 				state.error = null;
 			})
-			.addCase(
-				searchArtworks.fulfilled,
-				(state, action: PayloadAction<Artwork[]>) => {
-					state.status = Status.Succeeded;
-					state.artworks = action.payload;
-					state.artworks = updateArtworksWithFavorites(state.artworks, state.favorites);
-				}
-			)
+			.addCase(searchArtworks.fulfilled, (state, action) => {
+				const [newArtworks, nextArtworksUrl] = action.payload;
+				state.status = Status.Succeeded;
+				state.artworks = [...state.artworks, ...newArtworks];
+				state.nextArtworksUrl = nextArtworksUrl;
+			})
 			.addCase(searchArtworks.rejected, (state, action) => {
 				state.status = Status.Failed;
 				state.error = action.error.message || 'Failed to fetch artworks';
@@ -95,7 +109,7 @@ export const artworkSlice = createSlice({
 				fetchArtworkById.fulfilled,
 				(state, action: PayloadAction<Artwork>) => {
 					state.status = Status.Succeeded;
-					state.artworks = [action.payload, ...state.artworks.slice(1)];
+					state.lastViewedArtwork = action.payload;
 				}
 			)
 			.addCase(fetchArtworkById.rejected, (state, action) => {
@@ -105,4 +119,11 @@ export const artworkSlice = createSlice({
 	},
 });
 
+export const {
+	initiateNewSearch,
+	clearArtworks,
+	resetNextArtworksUrl,
+	resetLastViewedArtwork,
+	setPage,
+} = artworkSlice.actions;
 export default artworkSlice.reducer;
