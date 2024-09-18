@@ -1,23 +1,34 @@
 import {
+	ARTWORKS_PER_PAGE,
+	INITIAL_PAGE,
+	OTHER_WORKS_COUNT,
+} from '@/constants/artworks';
+import {
 	fetchArtworkById,
 	fetchArtworks,
 	searchArtworks,
 	setFavorite,
-	sortArtworks,
 	sortArtworksByTitleAsc,
 	sortArtworksByTitleDesc,
-	updateArtworksWithFavorites
 } from '@/store/actions/artworks';
 import { Status } from '@/types/api';
-import { Artwork } from '@/types/artwork';
+import { Artwork, ArtworkCategory } from '@/types/artwork';
 import { ArtworkState } from '@/types/store';
+import { sortArtworks } from '@/utils/artworks';
+import LocalStorageService from '@/utils/LocalStorageService';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-const storedFavorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+const storedFavorites =
+	LocalStorageService.getItem<Artwork[]>('favorites') || [];
 
 const initialState: ArtworkState = {
-	artworks: storedFavorites,
+	artworks: [],
 	favorites: storedFavorites,
+	otherWorks: [],
+	searching: false,
+	nextArtworksUrl: null,
+	lastViewedArtwork: null,
+	page: INITIAL_PAGE,
 	status: Status.Idle,
 	error: null,
 };
@@ -25,45 +36,85 @@ const initialState: ArtworkState = {
 export const artworkSlice = createSlice({
 	name: 'artwork',
 	initialState,
-	reducers: {},
+	reducers: {
+		setPage: (state, action: PayloadAction<number>) => {
+			state.page = action.payload;
+		},
+		resetLastViewedArtwork: (state) => {
+			state.lastViewedArtwork = null;
+		},
+		initiateNewSearch: (state) => {
+			state.page = INITIAL_PAGE;
+			state.nextArtworksUrl = null;
+			state.artworks = [];
+			state.searching = true;
+		},
+	},
 	extraReducers: (builder) => {
 		builder
 			.addCase(setFavorite, (state, action) => {
 				const artwork = action.payload.artwork;
-				const foundArtwork = state.artworks.find(
+				const foundArtwork = state.favorites.find(
 					(art) => art.id === artwork.id
 				);
 
 				if (foundArtwork) {
-					if (foundArtwork.favorite) {
-						foundArtwork.favorite = false;
-						state.favorites = state.favorites.filter(
-							(favorite) => favorite.id !== foundArtwork.id
-						);
-					} else {
-						foundArtwork.favorite = true;
-						state.favorites.push(foundArtwork);
-						state.artworks.push(foundArtwork);
-					}
-					localStorage.setItem('favorites', JSON.stringify(state.favorites));
+					state.favorites = state.favorites.filter(
+						(favorite) => favorite.id !== foundArtwork.id
+					);
+				} else {
+					state.favorites.push(artwork);
 				}
+				LocalStorageService.setItem('favorites', state.favorites);
 			})
 			// cases for sorting artworks
-			.addCase(sortArtworksByTitleAsc, (state) => {
-				sortArtworks(state, (a, b) => a.title.localeCompare(b.title));
+			.addCase(sortArtworksByTitleAsc, (state, action) => {
+				const compareFn = (a: Artwork, b: Artwork) =>
+					a.title.localeCompare(b.title);
+
+				switch (action.payload) {
+					case ArtworkCategory.Gallery:
+						sortArtworks(state, compareFn);
+						break;
+					case ArtworkCategory.OtherWorks:
+						state.otherWorks.sort(compareFn);
+						break;
+					case ArtworkCategory.Favorites:
+						state.favorites.sort(compareFn);
+						break;
+				}
 			})
-			.addCase(sortArtworksByTitleDesc, (state) => {
-				sortArtworks(state, (a, b) => b.title.localeCompare(a.title));
+			.addCase(sortArtworksByTitleDesc, (state, action) => {
+				const compareFn = (a: Artwork, b: Artwork) =>
+					b.title.localeCompare(a.title);
+				switch (action.payload) {
+					case ArtworkCategory.Gallery:
+						sortArtworks(state, compareFn);
+						break;
+					case ArtworkCategory.OtherWorks:
+						state.otherWorks.sort(compareFn);
+						break;
+					case ArtworkCategory.Favorites:
+						state.favorites.sort(compareFn);
+						break;
+				}
 			})
 			// cases for fetchArtworks
 			.addCase(fetchArtworks.pending, (state) => {
 				state.status = Status.Loading;
 			})
 			.addCase(fetchArtworks.fulfilled, (state, action) => {
+				const [newArtworks, nextArtworksUrl] = action.payload;
 				state.status = Status.Succeeded;
-				state.artworks = action.payload;
-				state.artworks = action.payload;
-				state.artworks = updateArtworksWithFavorites(state.artworks, state.favorites);
+
+				if (newArtworks.length > ARTWORKS_PER_PAGE) {
+					state.otherWorks = newArtworks.slice(0, OTHER_WORKS_COUNT);
+					state.artworks = newArtworks.slice(OTHER_WORKS_COUNT);
+				} else {
+					state.artworks = [...state.artworks, ...newArtworks];
+				}
+
+				state.nextArtworksUrl = nextArtworksUrl;
 			})
 			.addCase(fetchArtworks.rejected, (state, action) => {
 				state.status = Status.Failed;
@@ -74,14 +125,12 @@ export const artworkSlice = createSlice({
 				state.status = Status.Loading;
 				state.error = null;
 			})
-			.addCase(
-				searchArtworks.fulfilled,
-				(state, action: PayloadAction<Artwork[]>) => {
-					state.status = Status.Succeeded;
-					state.artworks = action.payload;
-					state.artworks = updateArtworksWithFavorites(state.artworks, state.favorites);
-				}
-			)
+			.addCase(searchArtworks.fulfilled, (state, action) => {
+				const [newArtworks, nextArtworksUrl] = action.payload;
+				state.status = Status.Succeeded;
+				state.artworks = [...state.artworks, ...newArtworks];
+				state.nextArtworksUrl = nextArtworksUrl;
+			})
 			.addCase(searchArtworks.rejected, (state, action) => {
 				state.status = Status.Failed;
 				state.error = action.error.message || 'Failed to fetch artworks';
@@ -95,7 +144,7 @@ export const artworkSlice = createSlice({
 				fetchArtworkById.fulfilled,
 				(state, action: PayloadAction<Artwork>) => {
 					state.status = Status.Succeeded;
-					state.artworks = [action.payload, ...state.artworks.slice(1)];
+					state.lastViewedArtwork = action.payload;
 				}
 			)
 			.addCase(fetchArtworkById.rejected, (state, action) => {
@@ -105,4 +154,6 @@ export const artworkSlice = createSlice({
 	},
 });
 
+export const { initiateNewSearch, resetLastViewedArtwork, setPage } =
+	artworkSlice.actions;
 export default artworkSlice.reducer;
