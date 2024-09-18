@@ -1,0 +1,10 @@
+.sorting {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+	font-size: 1.2rem;
+}
+
+.sorting svg {
+	background-color: transparent;
+}
