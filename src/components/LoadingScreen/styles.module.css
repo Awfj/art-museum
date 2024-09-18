@@ -1,5 +1,5 @@
 .loading-screen {
-	background-color: white;
+	background-color: var(--background-color-lighter);
 	display: flex;
 	justify-content: center;
 	align-items: center;

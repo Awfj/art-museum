@@ -8,6 +8,7 @@ import { store } from './store';
 
 import './index.css';
 
+import { ROUTE_PATHS } from '@/constants/routePaths';
 import DetailInfo from '@/pages/DetailInfo/';
 import Error from '@/pages/Error/';
 import Favorites from '@/pages/Favorites/';
@@ -15,7 +16,7 @@ import Home from '@/pages/Home/';
 
 const router = createBrowserRouter([
 	{
-		path: '/',
+		path: ROUTE_PATHS.HOME,
 		element: (
 			<ErrorBoundary FallbackComponent={Error}>
 				<Home />
@@ -24,7 +25,7 @@ const router = createBrowserRouter([
 		errorElement: <Error />,
 	},
 	{
-		path: '/favorites',
+		path: ROUTE_PATHS.FAVORITES,
 		element: (
 			<ErrorBoundary FallbackComponent={Error}>
 				<Favorites />
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
 		errorElement: <Error />,
 	},
 	{
-		path: '/detail-info/:id',
+		path: ROUTE_PATHS.ARTWORK.DETAIL_INFO,
 		element: (
 			<ErrorBoundary FallbackComponent={Error}>
 				<DetailInfo />
@@ -42,7 +43,7 @@ const router = createBrowserRouter([
 		errorElement: <Error />,
 	},
 	{
-		path: '*',
+		path: ROUTE_PATHS.NOT_FOUND,
 		element: <Error />,
 	},
 ]);

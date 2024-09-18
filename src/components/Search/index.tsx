@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { SearchIcon } from 'lucide-react';
@@ -7,14 +8,20 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './styles.module.css';
 
 import PageHeading from '@/components/PageHeading';
+import { initiateNewSearch } from '@/store/reducers/artworkSlice';
+import { AppDispatch } from '@/types/store';
 import { debouncedSubmit } from '@/utils/form';
 
-const searchSchema = object({
-	searchTerm: string().required('Please enter a search term'),
-});
-
 export default function Search() {
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
+
+	const searchSchema = useMemo(
+		() =>
+			object({
+				searchTerm: string().required('Please enter a search term'),
+			}),
+		[]
+	);
 
 	const {
 		register,
@@ -24,9 +31,14 @@ export default function Search() {
 		resolver: yupResolver(searchSchema),
 	});
 
-	function submitForm(data: { searchTerm: string }) {
-		debouncedSubmit(data, dispatch);
-	}
+	const submitForm = useCallback(
+		(data: { searchTerm: string }) => {
+			dispatch(initiateNewSearch());
+			debouncedSubmit(data, dispatch);
+		},
+		[dispatch]
+	);
+
 	return (
 		<section className={styles.search}>
 			<PageHeading>

@@ -1,66 +1,73 @@
-import { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
-import { ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles.module.css';
 
 import Card from '@/components/Card';
 import ContentHeading from '@/components/ContentHeading';
-import IconButton from '@/components/IconButton';
+import ControllerContainer from '@/components/ControllerContainer';
+import Loader from '@/components/Loader';
 import Pagination from '@/components/Pagination';
-import { ARTWORKS_IN_GALLERY, ARTWORKS_PER_PAGE } from '@/constants/artworks';
-import {
-	sortArtworksByTitleAsc,
-	sortArtworksByTitleDesc,
-} from '@/store/actions/artworks';
+import Sorting from '@/components/Sorting';
+import { ARTWORKS_PER_PAGE, INITIAL_PAGE } from '@/constants/artworks';
+import { TABLET_MAX_WIDTH, TABLET_MIN_WIDTH } from '@/constants/breakpoints';
+import { fetchArtworks, searchArtworks } from '@/store/actions/artworks';
+import { setPage } from '@/store/reducers/artworkSlice';
+import { Status } from '@/types/api';
 import { Artwork } from '@/types/artwork';
-import { RootState } from '@/types/store';
-import { AppDispatch } from '@/types/store';
+import { ArtworkCategory } from '@/types/artwork';
+import { AppDispatch, RootState } from '@/types/store';
 
 export default function Gallery() {
 	const [artworksPerPage, setArtworksPerPage] = useState(ARTWORKS_PER_PAGE);
 	const contentHeadingRef = useRef<HTMLDivElement>(null);
 	const [userInitiated, setUserInitiated] = useState(false);
 
+	const status = useSelector((state: RootState) => state.artworks.status);
+	const searching = useSelector((state: RootState) => state.artworks.searching);
+
 	const dispatch: AppDispatch = useDispatch();
-	const favoritesCount = useSelector(
-		(state: RootState) => state.artworks.favorites
-	).length;
-	let artworks = useSelector((state: RootState) => state.artworks.artworks);
-	if (favoritesCount > 0) {
-		artworks = artworks.slice(0, -favoritesCount);
-	}
-	artworks = artworks.slice(0, ARTWORKS_IN_GALLERY);
-	const [currentPage, setCurrentPage] = useState(1);
+	const artworks = useSelector((state: RootState) => state.artworks.artworks);
+	const page = useSelector((state: RootState) => state.artworks.page);
 
-	const lastWorkIndex = currentPage * artworksPerPage;
-	const firstWorkIndex = lastWorkIndex - artworksPerPage;
-	const currentWorks = artworks.slice(firstWorkIndex, lastWorkIndex);
+	const firstIndex = useMemo(
+		() => artworks.findIndex((artwork) => artwork.page === page),
+		[artworks, page]
+	);
+	const currentWorks = useMemo(
+		() => artworks.slice(firstIndex, firstIndex + ARTWORKS_PER_PAGE),
+		[artworks, firstIndex]
+	);
 
-	const handlePageChange = (pageNumber: number) => {
-		setUserInitiated(true);
-		setCurrentPage(pageNumber);
-	};
+	const handlePageChange = useCallback(
+		(pageNumber: number) => {
+			if (status === Status.Succeeded) {
+				if (!artworks.some((artwork) => artwork.page === pageNumber)) {
+					if (searching) {
+						dispatch(searchArtworks({ page: pageNumber }));
+					} else {
+						dispatch(fetchArtworks(pageNumber));
+					}
+				}
+			}
 
-	const handleSortByTitleAsc = () => {
-		dispatch(sortArtworksByTitleAsc());
-	};
-
-	const handleSortByTitleDesc = () => {
-		dispatch(sortArtworksByTitleDesc());
-	};
+			setUserInitiated(true);
+			dispatch(setPage(pageNumber));
+		},
+		[status, artworks, searching, dispatch]
+	);
 
 	useEffect(() => {
 		const handleResize = () => {
 			const newArtworksPerPage =
-				window.innerWidth > 640 && window.innerWidth <= 960
+				window.innerWidth > TABLET_MIN_WIDTH &&
+				window.innerWidth <= TABLET_MAX_WIDTH
 					? ARTWORKS_PER_PAGE - 1
 					: ARTWORKS_PER_PAGE;
 
 			if (newArtworksPerPage !== artworksPerPage) {
 				setArtworksPerPage(newArtworksPerPage);
-				setCurrentPage(1);
+				dispatch(setPage(INITIAL_PAGE));
 			}
 		};
 
@@ -70,7 +77,7 @@ export default function Gallery() {
 		return () => {
 			window.removeEventListener('resize', handleResize);
 		};
-	}, [artworksPerPage]);
+	}, [artworksPerPage, dispatch]);
 
 	useEffect(() => {
 		if (
@@ -81,11 +88,7 @@ export default function Gallery() {
 			contentHeadingRef.current.scrollIntoView({ behavior: 'smooth' });
 			setUserInitiated(false);
 		}
-	}, [currentPage, userInitiated]);
-
-	if (artworks.length === 0) {
-		return null;
-	}
+	}, [userInitiated]);
 
 	return (
 		<section ref={contentHeadingRef}>
@@ -94,28 +97,21 @@ export default function Gallery() {
 				description={'Topics for you'}
 			/>
 
-			<div className={`${styles.cards}`}>
-				{currentWorks.map((artwork: Artwork) => (
-					<Card key={artwork.id} artwork={artwork} />
-				))}
-			</div>
-
-			<footer className={styles.footer}>
-				<div className={styles.sorting}>
-					<p>Sort by title:</p>
-					<IconButton onClick={handleSortByTitleAsc}>
-						<ArrowDownAZ />
-					</IconButton>
-					<IconButton onClick={handleSortByTitleDesc}>
-						<ArrowUpAZ />
-					</IconButton>
+			{artworks.length === 0 || status === Status.Loading ? (
+				<div className={styles.loader}>
+					<Loader />
 				</div>
-				<Pagination
-					length={Math.ceil(artworks.length / artworksPerPage)}
-					currentPage={currentPage}
-					onPageChange={handlePageChange}
-				/>
-			</footer>
+			) : (
+				<div className={`${styles.cards}`}>
+					{currentWorks.map((artwork: Artwork) => (
+						<Card key={artwork.id} artwork={artwork} />
+					))}
+				</div>
+			)}
+			<ControllerContainer>
+				<Sorting artworkCategory={ArtworkCategory.Gallery} />
+				<Pagination currentPage={page} onPageChange={handlePageChange} />
+			</ControllerContainer>
 		</section>
 	);
 }

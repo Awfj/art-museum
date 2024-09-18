@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Menu, X } from 'lucide-react';
 
@@ -21,13 +21,13 @@ export default function Header() {
 	const dispatch = useDispatch();
 	useCloseMenu(menuOpen, mobile);
 
-	const handleMenuOpen = () => {
+	const handleMenuOpen = useCallback(() => {
 		dispatch(openMenu());
-	};
+	}, [dispatch]);
 
-	const handleMenuClose = () => {
+	const handleMenuClose = useCallback(() => {
 		dispatch(closeMenu());
-	};
+	}, [dispatch]);
 
 	useEffect(() => {
 		if (menuOpen) {
@@ -47,6 +47,11 @@ export default function Header() {
 		}
 	}, [menuOpen]);
 
+	const memoizedButtonPosition = useMemo(
+		() => buttonPosition,
+		[buttonPosition]
+	);
+
 	return (
 		<header className={styles.header}>
 			<Container fixedRegion>
@@ -59,7 +64,9 @@ export default function Header() {
 						<Navigation />
 						<IconButton
 							onClick={handleMenuClose}
-							style={{ top: buttonPosition.top, right: buttonPosition.right }}
+							style={{
+								top: memoizedButtonPosition.top,
+							}}
 						>
 							<X />
 						</IconButton>

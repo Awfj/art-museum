@@ -2,17 +2,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 :root {
-	--font-color-primary: #393939;
-	--font-color-secondary: #f17900;
-	--font-color-ternary: #e0a449;
-	--background-color-primary: #fafafa;
+	--color-primary: #393939;
+	--color-secondary: #f17900;
+	--color-ternary: #e0a449;
 
+	--background-color-light: #fafafa;
+	--background-color-lighter: #ffffff;
+	--background-color-darker: #000000;
+	--background-color-dark: #f0f1f1;
+
+	--background-color-loader: #0000;
+
+	--font-primary: 'Lexend Deca', sans-serif;
+	--font-secondary: 'Inter', sans-serif;
+
+	--transition: 0.2s ease-in-out;
+
+	--linear-gradient: linear-gradient(
+		90deg,
+		#343333 38.05%,
+		#484848 69.22%,
+		#282828 98.98%
+	);
+
+	--overlay-color: rgba(0, 0, 0, 0.9);
+	--card-height: 32.375rem;
+	--border-radius: 1rem;
+	--outline-width: 0.0625rem;
 	--section-gap: 7.5rem;
+	--gallery-image-height: 27.75rem;
+	--info-block-height: 9.625em;
 }
 
 * {
 	box-sizing: border-box;
-	font-family: 'Lexend Deca', sans-serif;
+	font-family: var(--font-primary);
 	font-style: normal;
 }
 
@@ -25,7 +49,7 @@
 
 body {
 	margin: 0;
-	background-color: var(--background-color-primary);
+	background-color: var(--background-color-light);
 }
 
 a {
@@ -41,7 +65,7 @@ h3 {
 
 button {
 	cursor: pointer;
-	transition: background-color 0.3s ease-in-out;
+	transition: background-color var(--transition);
 	border: none;
 	background-color: transparent;
 	display: flex;
@@ -55,19 +79,20 @@ button {
 	visibility: hidden;
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
 	:root {
 		--section-gap: 5.625rem;
+		--gallery-image-height: 20rem;
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
 	:root {
 		--section-gap: 3.75rem;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	:root {
 		--section-gap: 1.875rem;
 	}

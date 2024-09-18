@@ -16,7 +16,7 @@
 }
 
 .details h2 {
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 	font-size: 2rem;
 	font-weight: 400;
 	line-height: normal;
@@ -28,11 +28,11 @@
 }
 
 .info p:not(:last-child) {
-	margin-bottom: 11px;
+	margin-bottom: 0.6875rem;
 }
 
 .overview p:not(:last-child) {
-	margin-bottom: 17px;
+	margin-bottom: 1.0625rem;
 }
 
 .info {
@@ -40,34 +40,34 @@
 }
 
 .artist {
-	color: var(--font-color-ternary);
-	font-size: 24px;
+	color: var(--color-ternary);
+	font-size: 1.5rem;
 	line-height: normal;
 }
 
 .overview p {
-	color: var(--font-color-primary);
-	font-size: 16px;
+	color: var(--color-primary);
+	font-size: 1rem;
 }
 
 .overview span {
-	color: var(--font-color-ternary);
+	color: var(--color-ternary);
 }
 
 .date {
-	color: var(--font-color-primary);
-	font-size: 16px;
+	color: var(--color-primary);
+	font-size: 1rem;
 	font-weight: 700;
 	line-height: normal;
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 90rem) {
 	.info {
 		margin-bottom: 3rem;
 	}
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
 	.info {
 		margin-bottom: 2rem;
 	}
@@ -77,14 +77,14 @@
 	}
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
 	.detailes-info {
 		flex-direction: column;
 		gap: 1rem;
 	}
 }
 
-@media (max-width: 640px) {
+@media (max-width: 40rem) {
 	.info {
 		margin-bottom: 2rem;
 	}

@@ -1,10 +1,10 @@
 .icon-button {
 	padding: 0.5rem;
 	font-size: 1.5rem;
-	border-radius: 4px;
+	border-radius: 0.25rem;
 }
 
 .icon-button:hover {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 }

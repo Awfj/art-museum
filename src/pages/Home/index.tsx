@@ -6,6 +6,7 @@ import LoadingScreen from '@/components/LoadingScreen';
 import OtherWorks from '@/components/OtherWorks';
 import Page from '@/components/Page';
 import Search from '@/components/Search';
+import { INITIAL_PAGE } from '@/constants/artworks';
 import { fetchArtworks } from '@/store/actions/artworks';
 import { Status } from '@/types/api';
 import { AppDispatch, RootState } from '@/types/store';
@@ -13,15 +14,17 @@ import { AppDispatch, RootState } from '@/types/store';
 export default function Home() {
 	const dispatch: AppDispatch = useDispatch();
 	const status = useSelector((state: RootState) => state.artworks.status);
+	const artworks = useSelector((state: RootState) => state.artworks.artworks);
 	const error = useSelector((state: RootState) => state.artworks.error);
+	const searching = useSelector((state: RootState) => state.artworks.searching);
 
 	useEffect(() => {
-		if (status === Status.Idle) {
-			dispatch(fetchArtworks());
+		if (!searching && artworks.length === 0) {
+			dispatch(fetchArtworks(INITIAL_PAGE));
 		}
-	}, [status, dispatch]);
+	}, [dispatch, artworks, searching]);
 
-	if (status === Status.Loading) {
+	if (!searching && artworks.length === 0) {
 		return <LoadingScreen />;
 	}
 

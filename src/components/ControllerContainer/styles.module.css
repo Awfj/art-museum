@@ -1,0 +1,13 @@
+.controller-container {
+	margin-top: 1.375rem;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+@media (max-width: 40rem) {
+	.controller-container {
+		gap: 1rem;
+		flex-direction: column;
+	}
+}
