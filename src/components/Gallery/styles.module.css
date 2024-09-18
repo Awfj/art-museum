@@ -2,21 +2,13 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 2rem;
-	height: 32.375rem;
 }
 
 .loader {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 32.375rem;
-}
-
-.footer {
-	margin-top: 22px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	height: var(--card-height);
 }
 
 .sorting {
@@ -30,22 +22,14 @@
 	background-color: transparent;
 }
 
-@media (max-width: 960px) {
-	.cards {
-		grid-template-columns: repeat(2, auto);
-	}
-}
-
-@media (max-width: 640px) {
+@media (max-width: 60rem) {
 	.cards {
 		grid-template-columns: repeat(1, auto);
-		gap: 1rem;
-	}
-	.footer {
-		gap: 1rem;
-		flex-direction: column;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 40rem) {
+	.cards {
+		gap: 1rem;
+	}
 }

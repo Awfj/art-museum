@@ -4,20 +4,20 @@
 	flex-direction: column;
 	align-items: center;
 	margin: 0 auto;
-	color: var(--font-color-primary);
+	color: var(--color-primary);
 }
 
 .word-emphasis {
-	color: var(--font-color-secondary);
+	color: var(--color-secondary);
 }
 
 .search-form {
 	min-height: 4rem;
 	display: flex;
-	border-radius: 16px;
-	background: rgba(57, 57, 57, 0.05);
+	border-radius: 1rem;
+	background: var(--background-color-dark);
 	margin-top: 4.5rem;
-	max-width: 762px;
+	max-width: 47.625rem;
 	width: 100%;
 }
 
@@ -27,7 +27,7 @@
 
 .form-input {
 	flex-grow: 1;
-	border-radius: 16px 0 0 16px;
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
 	padding: 1rem;
 	border: none;
 	background-color: transparent;
@@ -35,8 +35,9 @@
 }
 
 .form-input::placeholder {
-	color: rgba(57, 57, 57, 0.5);
-	font-family: Inter;
+	color: var(--color-primary);
+	opacity: 0.5;
+	font-family: var(--font-secondary);
 	font-size: 0.875rem;
 	font-weight: 400;
 	line-height: normal;
@@ -45,21 +46,23 @@
 
 .form-button {
 	padding-inline: 1rem;
-	border-radius: 0 16px 16px 0;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
 	align-items: center;
 }
 
 .form-button svg {
-	width: 32px;
-	height: 32px;
+	--size: 2rem;
+
+	width: var(--size);
+	height: var(--size);
 }
 
 .form-button:hover {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.search-form {
 		margin-top: 2rem;
 	}
