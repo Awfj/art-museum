@@ -1,45 +1,44 @@
 .pagination {
 	display: flex;
-	gap: 21px;
+	gap: 1.3125rem;
 
 	justify-content: flex-end;
 	align-items: center;
 }
 
 .pagination button {
+	--size: 1.875rem;
+
+	width: var(--size);
+	height: var(--size);
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
-
 	display: flex;
 	justify-content: center;
 	align-items: center;
-
-	width: 30px;
-	height: 30px;
-	border-radius: 4px;
-
-	font-size: 18px;
-	line-height: 24px;
+	border-radius: 0.25rem;
+	font-size: 1.125rem;
+	line-height: 1.5rem;
 }
 
 .page-numbers {
 	display: flex;
-	gap: 10px;
+	gap: 0.625rem;
 }
 
 .page-numbers button:hover {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 }
 
 .page-numbers .active {
-	background-color: var(--font-color-secondary);
-	color: white;
+	background-color: var(--color-secondary);
+	color: var(--background-color-lighter);
 	font-weight: 600;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.pagination {
 		justify-content: center;
 	}

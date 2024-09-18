@@ -1,34 +1,40 @@
 .bookmark {
+	--size: 3.6875rem;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 59px;
-	height: 59px;
-	border: 1px solid transparent;
-	background: #f9f9f9;
-	border-radius: 35.0889px;
-	transition: border-color 0.3s ease-in-out;
+	width: var(--size);
+	height: var(--size);
+	border: 0.0625rem solid transparent;
+	background: var(--background-color-light);
+	border-radius: 2.1875rem;
+	transition: border-color var(--transition);
 }
 
 .bookmark:hover {
-	border: 1px solid var(--font-color-primary);
+	border: 0.0625rem solid var(--color-primary);
 }
 
 .bookmark svg {
-	width: 25px;
-	height: 25px;
+	--size: 1.5625rem;
+
+	width: var(--size);
+	height: var(--size);
 }
 
 .floaty {
+	--distance: 1rem;
+
 	position: absolute;
-	top: 16px;
-	right: 16px;
+	top: var(--distance);
+	right: var(--distance);
 }
 
 .favorite {
-	background-color: rgba(251, 215, 178, 0.3);
+	background-color: var(--background-color-light);
 }
 
 .favorite svg {
-	fill: var(--font-color-secondary);
+	fill: var(--color-secondary);
 }

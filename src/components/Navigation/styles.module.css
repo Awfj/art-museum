@@ -1,28 +1,30 @@
 .nav {
 	display: flex;
-	gap: 29px;
+	gap: 1.8125rem;
 }
 
 .home svg {
-	width: 24px;
-	height: 24px;
+	--size: 1.5rem;
+
+	width: var(--size);
+	height: var(--size);
 }
 
 .link {
-	font-size: 16px;
-	color: #fff;
+	font-size: 1rem;
+	color: var(--background-color-lighter);
 	display: flex;
 	gap: 5px;
 	align-items: center;
-	font-family: 'Inter', sans-serif;
+	font-family: var(--font-secondary);
 	line-height: normal;
-	transition: color 0.3s ease-in-out;
+	transition: color var(--transition);
 }
 
 .link:hover {
-	color: var(--font-color-ternary);
+	color: var(--color-ternary);
 }
 
 .favorites svg path {
-	stroke: var(--font-color-ternary);
+	stroke: var(--color-ternary);
 }

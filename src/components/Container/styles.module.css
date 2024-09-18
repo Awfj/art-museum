@@ -20,19 +20,19 @@
 	gap: 2rem;
 }
 
-@media (max-width: 1440px) {
+@media (max-width: 90rem) {
 	.container {
 		padding-inline: 12%;
 	}
 }
 
-@media (max-width: 960px) {
+@media (max-width: 60rem) {
 	.container {
 		padding-inline: 8%;
 	}
 }
 
-@media (max-width: 480px) {
+@media (max-width: 30rem) {
 	.container {
 		padding-inline: 5%;
 	}

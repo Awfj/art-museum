@@ -9,5 +9,11 @@ export interface Artwork {
 	repository?: string;
 	date?: string;
 	medium: string;
-	favorite: boolean;
+	page?: number;
+}
+
+export enum ArtworkCategory {
+	Gallery = 'gallery',
+	OtherWorks = 'otherWorks',
+	Favorites = 'favorites',
 }

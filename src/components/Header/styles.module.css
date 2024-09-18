@@ -1,14 +1,9 @@
 .header {
-	background: linear-gradient(
-		90deg,
-		#343333 38.05%,
-		#484848 69.22%,
-		#282828 98.98%
-	);
+	background: var(--linear-gradient);
 }
 
 .header button svg {
-	color: white;
+	color: var(--background-color-lighter);
 }
 
 .overlay {
@@ -19,8 +14,8 @@
 	overflow: hidden;
 	position: fixed;
 	z-index: 1;
-	background-color: rgb(0, 0, 0);
-	background-color: rgba(0, 0, 0, 0.9);
+	background-color: var(--background-color-darker);
+	opacity: 0.9;
 }
 
 .overlay > *:first-child {
@@ -31,10 +26,12 @@
 }
 
 .overlay button {
+	--distance: 5%;
+
 	position: absolute;
-	top: 5%;
-	right: 5%;
-	font-size: 30px;
-	color: white;
+	top: var(--distance);
+	right: var(--distance);
+	font-size: 1.875rem;
+	color: var(--background-color-lighter);
 	cursor: pointer;
 }
