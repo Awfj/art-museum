@@ -2,6 +2,14 @@ export interface ArtApiResponse {
 	_embedded: {
 		artworks: ArtworkResponse[];
 	};
+	_links: {
+		next?: {
+			href: string;
+		};
+		self: {
+			href: string;
+		};
+	};
 }
 
 export interface ArtworkResponse {
@@ -28,8 +36,17 @@ export interface ArtworkResponse {
 }
 
 export interface ArtApiSearchResponse {
+	total_count: number;
 	_embedded: {
 		results: ArtworkSearchResponse[];
+	};
+	_links: {
+		next?: {
+			href: string;
+		};
+		self: {
+			href: string;
+		};
 	};
 }
 
