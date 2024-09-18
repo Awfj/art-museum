@@ -4,6 +4,7 @@ import styles from './styles.module.css';
 
 import NoImage from '@/assets/no-image.png';
 import InfoBlock from '@/components/InfoBlock';
+import { ROUTE_PATHS } from '@/constants/routePaths';
 import { CardSize } from '@/types/app';
 import { Artwork } from '@/types/artwork';
 
@@ -16,7 +17,7 @@ export default function Card({ artwork, size = CardSize.Normal }: CardProps) {
 	const navigate = useNavigate();
 
 	const handleClick = () => {
-		navigate(`/detail-info/${artwork.id}`);
+		navigate(ROUTE_PATHS.ARTWORK.getDetailInfoPath(artwork.id));
 	};
 
 	return (
