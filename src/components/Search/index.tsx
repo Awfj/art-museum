@@ -7,6 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import styles from './styles.module.css';
 
 import PageHeading from '@/components/PageHeading';
+import { initiateNewSearch } from '@/store/reducers/artworkSlice';
+import { AppDispatch } from '@/types/store';
 import { debouncedSubmit } from '@/utils/form';
 
 const searchSchema = object({
@@ -14,7 +16,7 @@ const searchSchema = object({
 });
 
 export default function Search() {
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
 
 	const {
 		register,
@@ -25,6 +27,7 @@ export default function Search() {
 	});
 
 	function submitForm(data: { searchTerm: string }) {
+		dispatch(initiateNewSearch());
 		debouncedSubmit(data, dispatch);
 	}
 	return (

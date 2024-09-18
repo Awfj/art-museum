@@ -40,16 +40,13 @@ export const artworkSlice = createSlice({
 		setPage: (state, action: PayloadAction<number>) => {
 			state.page = action.payload;
 		},
-		resetNextArtworksUrl: (state) => {
-			state.nextArtworksUrl = null;
-		},
 		resetLastViewedArtwork: (state) => {
 			state.lastViewedArtwork = null;
 		},
-		clearArtworks: (state) => {
-			state.artworks = [];
-		},
 		initiateNewSearch: (state) => {
+			state.page = INITIAL_PAGE;
+			state.nextArtworksUrl = null;
+			state.artworks = [];
 			state.searching = true;
 		},
 	},
@@ -157,11 +154,6 @@ export const artworkSlice = createSlice({
 	},
 });
 
-export const {
-	initiateNewSearch,
-	clearArtworks,
-	resetNextArtworksUrl,
-	resetLastViewedArtwork,
-	setPage,
-} = artworkSlice.actions;
+export const { initiateNewSearch, resetLastViewedArtwork, setPage } =
+	artworkSlice.actions;
 export default artworkSlice.reducer;
