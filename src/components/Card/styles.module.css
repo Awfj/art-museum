@@ -6,14 +6,14 @@
 
 .normal,
 .small {
-	outline: 0.0625rem solid transparent;
+	outline: var(--outline-width) solid transparent;
 	transition: outline var(--transition);
 	cursor: pointer;
 }
 
 .normal:hover,
 .small:hover {
-	outline: 0.0625rem solid var(--color-primary);
+	outline: var(--outline-width) solid var(--color-primary);
 }
 
 .normal img {
@@ -33,6 +33,8 @@
 }
 
 .small img {
-	width: 5rem;
-	height: 5rem;
+	--size: 5rem;
+
+	width: var(--size);
+	height: var(--size);
 }

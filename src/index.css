@@ -11,6 +11,8 @@
 	--background-color-darker: #000000;
 	--background-color-dark: #f0f1f1;
 
+	--background-color-loader: #0000;
+
 	--font-primary: 'Lexend Deca', sans-serif;
 	--font-secondary: 'Inter', sans-serif;
 
@@ -24,7 +26,9 @@
 	);
 
 	--overlay-color: rgba(0, 0, 0, 0.9);
-
+	--card-height: 32.375rem;
+	--border-radius: 1rem;
+	--outline-width: 0.0625rem;
 	--section-gap: 7.5rem;
 }
 

@@ -2,21 +2,14 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 2rem;
-	height: 32.375rem;
+	height: var(--card-height);
 }
 
 .loader {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	height: 32.375rem;
-}
-
-.footer {
-	margin-top: 1.375rem;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+	height: var(--card-height);
 }
 
 .sorting {
@@ -40,9 +33,5 @@
 	.cards {
 		grid-template-columns: repeat(1, auto);
 		gap: 1rem;
-	}
-	.footer {
-		gap: 1rem;
-		flex-direction: column;
 	}
 }

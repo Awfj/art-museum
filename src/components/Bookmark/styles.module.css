@@ -1,11 +1,13 @@
 .bookmark {
+	--size: 3.6875rem;
+
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 3.6875rem;
-	height: 3.6875rem;
+	width: var(--size);
+	height: var(--size);
 	border: 0.0625rem solid transparent;
-	background: #f9f9f9;
+	background: var(--background-color-light);
 	border-radius: 2.1875rem;
 	transition: border-color var(--transition);
 }
@@ -15,14 +17,18 @@
 }
 
 .bookmark svg {
-	width: 1.5625rem;
-	height: 1.5625rem;
+	--size: 1.5625rem;
+
+	width: var(--size);
+	height: var(--size);
 }
 
 .floaty {
+	--distance: 1rem;
+
 	position: absolute;
-	top: 1rem;
-	right: 1rem;
+	top: var(--distance);
+	right: var(--distance);
 }
 
 .favorite {

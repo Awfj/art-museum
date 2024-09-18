@@ -9,13 +9,15 @@
 
 .floaty.info-block {
 	background-color: var(--background-color-lighter);
-	border: 1px solid var(--background-color-dark);
+	border: var(--border-radius) solid var(--background-color-dark);
 	padding: 1.0625rem 1.5rem;
 }
 
 .info-block {
+	--distance: 3.6875rem;
+
 	display: grid;
-	grid-template-columns: calc(100% - 3.6875rem - 1rem) 3.6875rem;
+	grid-template-columns: calc(100% - var(--distance) - 1rem) var(--distance);
 	gap: 1rem;
 	justify-content: space-between;
 	align-items: center;

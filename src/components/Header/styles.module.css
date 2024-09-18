@@ -26,9 +26,11 @@
 }
 
 .overlay button {
+	--distance: 5%;
+
 	position: absolute;
-	top: 5%;
-	right: 5%;
+	top: var(--distance);
+	right: var(--distance);
 	font-size: 1.875rem;
 	color: var(--background-color-lighter);
 	cursor: pointer;

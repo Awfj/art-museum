@@ -27,7 +27,7 @@
 
 .form-input {
 	flex-grow: 1;
-	border-radius: 1rem 0 0 1rem;
+	border-radius: var(--border-radius) 0 0 var(--border-radius);
 	padding: 1rem;
 	border: none;
 	background-color: transparent;
@@ -46,13 +46,15 @@
 
 .form-button {
 	padding-inline: 1rem;
-	border-radius: 0 1rem 1rem 0;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
 	align-items: center;
 }
 
 .form-button svg {
-	width: 2rem;
-	height: 2rem;
+	--size: 2rem;
+
+	width: var(--size);
+	height: var(--size);
 }
 
 .form-button:hover {
