@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
 
@@ -18,13 +19,13 @@ type SortingProps = {
 export default function Sorting({ artworkCategory }: SortingProps) {
 	const dispatch: AppDispatch = useDispatch();
 
-	const handleSortByTitleAsc = () => {
+	const handleSortByTitleAsc = useCallback(() => {
 		dispatch(sortArtworksByTitleAsc(artworkCategory));
-	};
+	}, [dispatch, artworkCategory]);
 
-	const handleSortByTitleDesc = () => {
+	const handleSortByTitleDesc = useCallback(() => {
 		dispatch(sortArtworksByTitleDesc(artworkCategory));
-	};
+	}, [dispatch, artworkCategory]);
 
 	return (
 		<div className={styles.sorting}>
