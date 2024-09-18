@@ -24,7 +24,7 @@ export default function Home() {
 		}
 	}, [dispatch, artworks, searching]);
 
-	if (status === Status.Loading && !searching && artworks.length === 0) {
+	if (!searching && artworks.length === 0) {
 		return <LoadingScreen />;
 	}
 
