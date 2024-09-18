@@ -1,5 +1,5 @@
 import { BASE_URL } from '@/constants/artApi';
-import { ARTWORKS_PER_PAGE } from '@/constants/artworks';
+import { ARTWORKS_PER_PAGE, OTHER_WORKS_COUNT } from '@/constants/artworks';
 import { ArtApiResponse, ArtApiSearchResponse } from '@/types/artApi';
 import { ArtApiTokenResponse } from '@/types/artApi';
 
@@ -33,8 +33,15 @@ export async function fetchUniqueArtworks(
 	let nextArtworksUrl = initialNextArtworksUrl;
 
 	do {
-		const url =
-			nextArtworksUrl ?? `${BASE_URL}/artworks?size=${ARTWORKS_PER_PAGE}`;
+		let url: string;
+		if (nextArtworksUrl) {
+			const urlObj = new URL(nextArtworksUrl);
+			urlObj.searchParams.set('size', ARTWORKS_PER_PAGE.toString());
+			url = urlObj.toString();
+		} else {
+			url = `${BASE_URL}/artworks?size=${OTHER_WORKS_COUNT + ARTWORKS_PER_PAGE}`;
+		}
+
 		const headers = { 'X-Xapp-Token': token };
 		const response = await fetch(url, { headers });
 
