@@ -1,24 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { ArrowDownAZ, ArrowUpAZ } from 'lucide-react';
 
 import styles from './styles.module.css';
 
 import Card from '@/components/Card';
 import ContentHeading from '@/components/ContentHeading';
-import IconButton from '@/components/IconButton';
+import ControllerContainer from '@/components/ControllerContainer';
 import Loader from '@/components/Loader';
 import Pagination from '@/components/Pagination';
+import Sorting from '@/components/Sorting';
 import { ARTWORKS_PER_PAGE } from '@/constants/artworks';
-import {
-	fetchArtworks,
-	searchArtworks,
-	sortArtworksByTitleAsc,
-	sortArtworksByTitleDesc,
-} from '@/store/actions/artworks';
+import { fetchArtworks, searchArtworks } from '@/store/actions/artworks';
 import { setPage } from '@/store/reducers/artworkSlice';
 import { Status } from '@/types/api';
 import { Artwork } from '@/types/artwork';
+import { ArtworkCategory } from '@/types/artwork';
 import { AppDispatch, RootState } from '@/types/store';
 
 export default function Gallery() {
@@ -50,14 +46,6 @@ export default function Gallery() {
 
 		setUserInitiated(true);
 		dispatch(setPage(pageNumber));
-	};
-
-	const handleSortByTitleAsc = () => {
-		dispatch(sortArtworksByTitleAsc());
-	};
-
-	const handleSortByTitleDesc = () => {
-		dispatch(sortArtworksByTitleDesc());
 	};
 
 	useEffect(() => {
@@ -92,10 +80,6 @@ export default function Gallery() {
 		}
 	}, [userInitiated]);
 
-	if (artworks.length === 0) {
-		return null;
-	}
-
 	return (
 		<section ref={contentHeadingRef}>
 			<ContentHeading
@@ -115,18 +99,10 @@ export default function Gallery() {
 				</div>
 			)}
 
-			<footer className={styles.footer}>
-				<div className={styles.sorting}>
-					<p>Sort by title:</p>
-					<IconButton onClick={handleSortByTitleAsc}>
-						<ArrowDownAZ />
-					</IconButton>
-					<IconButton onClick={handleSortByTitleDesc}>
-						<ArrowUpAZ />
-					</IconButton>
-				</div>
+			<ControllerContainer>
+				<Sorting artworkCategory={ArtworkCategory.Gallery} />
 				<Pagination currentPage={page} onPageChange={handlePageChange} />
-			</footer>
+			</ControllerContainer>
 		</section>
 	);
 }
