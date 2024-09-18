@@ -1,3 +1,4 @@
+import { ARTWORKS_PER_PAGE, INITIAL_PAGE } from '@/constants/artworks';
 import { ArtworkResponse, ArtworkSearchResponse } from '@/types/artApi';
 import { Artwork } from '@/types/artwork';
 import { ArtworkState, RootState } from '@/types/store';
@@ -5,14 +6,12 @@ import { extractArtistName } from '@/utils/artApi';
 
 export function transformArtworks(
 	artworks: ArtworkResponse[],
-	favoriteIds: Set<string>,
 	page: number
 ): Artwork[] {
 	return artworks.map((artwork: ArtworkResponse): Artwork => {
 		const artist = extractArtistName(artwork.slug, artwork.title);
 		const domainType = artwork.can_share ? 'Public' : 'Private';
 		const image = artwork._links.image.href.replace('{image_version}', 'large');
-		const favorite = favoriteIds.has(artwork.id);
 
 		return {
 			id: artwork.id,
@@ -25,7 +24,6 @@ export function transformArtworks(
 			repository: artwork.collecting_institution,
 			date: artwork.date,
 			medium: artwork.medium,
-			favorite,
 			page,
 		};
 	});
@@ -33,7 +31,6 @@ export function transformArtworks(
 
 export function transformSearchResults(
 	results: ArtworkSearchResponse[],
-	favoriteIds: Set<string>,
 	page: number
 ): Artwork[] {
 	return results.map((artwork: ArtworkSearchResponse): Artwork => {
@@ -42,7 +39,6 @@ export function transformSearchResults(
 		const artist = artwork.title.split(',')[0];
 		const dimensions = artwork.description.split(',')[1];
 		const medium = artwork.description.split(',')[0];
-		const favorite = favoriteIds.has(id);
 
 		return {
 			id,
@@ -53,7 +49,6 @@ export function transformSearchResults(
 			thumbnail: artwork._links.thumbnail.href,
 			dimensions,
 			medium,
-			favorite,
 			page,
 		};
 	});
@@ -64,14 +59,10 @@ export function getFavoriteIds(state: RootState): Set<string> {
 	return new Set(favorites.map((favorite) => favorite.id));
 }
 
-export function transformArtworkData(
-	data: ArtworkResponse,
-	favoriteIds: Set<string>
-): Artwork {
+export function transformArtworkData(data: ArtworkResponse): Artwork {
 	const artist = extractArtistName(data.slug, data.title);
 	const domainType = data.can_share ? 'Public' : 'Private';
 	const image = data._links.image.href.replace('{image_version}', 'large');
-	const favorite = favoriteIds.has(data.id);
 
 	return {
 		id: data.id,
@@ -84,7 +75,6 @@ export function transformArtworkData(
 		repository: data.collecting_institution,
 		date: data.date,
 		medium: data.medium,
-		favorite,
 	};
 }
 
@@ -92,10 +82,13 @@ export const sortArtworks = (
 	state: ArtworkState,
 	compareFn: (a: Artwork, b: Artwork) => number
 ) => {
-	let artworksWithoutFavorites = state.artworks;
-	if (state.favorites.length > 0) {
-		artworksWithoutFavorites = state.artworks.slice(0, -state.favorites.length);
-	}
-	artworksWithoutFavorites.sort(compareFn);
-	state.artworks = [...artworksWithoutFavorites, ...state.favorites];
+	let page = INITIAL_PAGE;
+	state.artworks.sort(compareFn);
+
+	state.artworks = state.artworks.map((artwork, index) => {
+		if (index % ARTWORKS_PER_PAGE === 0 && index !== 0) {
+			page += 1;
+		}
+		return { ...artwork, page };
+	});
 };

@@ -5,11 +5,10 @@ import {
 } from '@/api/artworks';
 import { getApiToken } from '@/api/artworks';
 import { ArtworkResponse } from '@/types/artApi';
-import { Artwork } from '@/types/artwork';
+import { Artwork, ArtworkCategory } from '@/types/artwork';
 import { RootState } from '@/types/store';
 import { ArtworkState } from '@/types/store';
 import {
-	getFavoriteIds,
 	transformArtworkData,
 	transformArtworks,
 	transformSearchResults,
@@ -23,7 +22,6 @@ export const fetchArtworks = createAsyncThunk(
 		const {
 			artworks: storedArtworks,
 			nextArtworksUrl: initialNextArtworksUrl,
-			favorites,
 		} = state.artworks;
 		const storedArtworkIds = new Set(
 			storedArtworks.map((artwork) => artwork.id)
@@ -36,12 +34,7 @@ export const fetchArtworks = createAsyncThunk(
 			initialNextArtworksUrl
 		);
 
-		const favoriteIds = new Set(favorites.map((favorite) => favorite.id));
-		const artworks = transformArtworks(
-			data._embedded.artworks,
-			favoriteIds,
-			page
-		);
+		const artworks = transformArtworks(data._embedded.artworks, page);
 
 		return [artworks, nextArtworksUrl];
 	}
@@ -57,7 +50,6 @@ export const searchArtworks = createAsyncThunk(
 		const {
 			artworks: storedArtworks,
 			nextArtworksUrl: initialNextArtworksUrl,
-			favorites,
 		} = state.artworks;
 		const storedArtworkIds = new Set(
 			storedArtworks.map((artwork) => artwork.id)
@@ -71,12 +63,7 @@ export const searchArtworks = createAsyncThunk(
 			query
 		);
 
-		const favoriteIds = new Set(favorites.map((favorite) => favorite.id));
-		const artworks = transformSearchResults(
-			data._embedded.results,
-			favoriteIds,
-			page
-		);
+		const artworks = transformSearchResults(data._embedded.results, page);
 
 		return [artworks, nextArtworksUrl];
 	}
@@ -84,7 +71,7 @@ export const searchArtworks = createAsyncThunk(
 
 export const fetchArtworkById = createAsyncThunk(
 	'artwork/fetchArtworkById',
-	async (id: string, { getState }) => {
+	async (id: string) => {
 		const token = await getApiToken();
 		const response = await fetchArtworkData(id, token);
 
@@ -93,9 +80,8 @@ export const fetchArtworkById = createAsyncThunk(
 		}
 
 		const data: ArtworkResponse = await response.json();
-		const favoriteIds = getFavoriteIds(getState() as RootState);
 
-		return transformArtworkData(data, favoriteIds);
+		return transformArtworkData(data);
 	}
 );
 
@@ -106,6 +92,7 @@ export const getArtworkById = (
 	return (
 		state.favorites.find((artwork: Artwork) => artwork.id === id) ||
 		state.artworks.find((artwork: Artwork) => artwork.id === id) ||
+		state.otherWorks.find((artwork: Artwork) => artwork.id === id) ||
 		state.lastViewedArtwork
 	);
 };
@@ -114,9 +101,9 @@ export const setFavorite = createAction<{
 	artwork: Artwork;
 }>('artwork/setFavorite');
 
-export const sortArtworksByTitleAsc = createAction(
+export const sortArtworksByTitleAsc = createAction<ArtworkCategory>(
 	'artworks/sortArtworksByTitleAsc'
 );
-export const sortArtworksByTitleDesc = createAction(
+export const sortArtworksByTitleDesc = createAction<ArtworkCategory>(
 	'artworks/sortArtworksByTitleDesc'
 );
