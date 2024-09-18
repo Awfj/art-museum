@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import styles from './styles.module.css';
@@ -9,7 +9,8 @@ import ControllerContainer from '@/components/ControllerContainer';
 import Loader from '@/components/Loader';
 import Pagination from '@/components/Pagination';
 import Sorting from '@/components/Sorting';
-import { ARTWORKS_PER_PAGE } from '@/constants/artworks';
+import { ARTWORKS_PER_PAGE, INITIAL_PAGE } from '@/constants/artworks';
+import { TABLET_MAX_WIDTH, TABLET_MIN_WIDTH } from '@/constants/breakpoints';
 import { fetchArtworks, searchArtworks } from '@/store/actions/artworks';
 import { setPage } from '@/store/reducers/artworkSlice';
 import { Status } from '@/types/api';
@@ -28,36 +29,45 @@ export default function Gallery() {
 	const dispatch: AppDispatch = useDispatch();
 	const artworks = useSelector((state: RootState) => state.artworks.artworks);
 	const page = useSelector((state: RootState) => state.artworks.page);
-	const firstIndex = artworks.findIndex((artwork) => {
-		return artwork.page === page;
-	});
-	const currentWorks = artworks.slice(firstIndex, firstIndex + 3);
 
-	const handlePageChange = (pageNumber: number) => {
-		if (status === Status.Succeeded) {
-			if (!artworks.some((artwork) => artwork.page === pageNumber)) {
-				if (searching) {
-					dispatch(searchArtworks({ page: pageNumber }));
-				} else {
-					dispatch(fetchArtworks(pageNumber));
+	const firstIndex = useMemo(
+		() => artworks.findIndex((artwork) => artwork.page === page),
+		[artworks, page]
+	);
+	const currentWorks = useMemo(
+		() => artworks.slice(firstIndex, firstIndex + ARTWORKS_PER_PAGE),
+		[artworks, firstIndex]
+	);
+
+	const handlePageChange = useCallback(
+		(pageNumber: number) => {
+			if (status === Status.Succeeded) {
+				if (!artworks.some((artwork) => artwork.page === pageNumber)) {
+					if (searching) {
+						dispatch(searchArtworks({ page: pageNumber }));
+					} else {
+						dispatch(fetchArtworks(pageNumber));
+					}
 				}
 			}
-		}
 
-		setUserInitiated(true);
-		dispatch(setPage(pageNumber));
-	};
+			setUserInitiated(true);
+			dispatch(setPage(pageNumber));
+		},
+		[status, artworks, searching, dispatch]
+	);
 
 	useEffect(() => {
 		const handleResize = () => {
 			const newArtworksPerPage =
-				window.innerWidth > 640 && window.innerWidth <= 960
+				window.innerWidth > TABLET_MIN_WIDTH &&
+				window.innerWidth <= TABLET_MAX_WIDTH
 					? ARTWORKS_PER_PAGE - 1
 					: ARTWORKS_PER_PAGE;
 
 			if (newArtworksPerPage !== artworksPerPage) {
 				setArtworksPerPage(newArtworksPerPage);
-				dispatch(setPage(1));
+				dispatch(setPage(INITIAL_PAGE));
 			}
 		};
 
@@ -87,7 +97,7 @@ export default function Gallery() {
 				description={'Topics for you'}
 			/>
 
-			{status === Status.Loading ? (
+			{artworks.length === 0 || status === Status.Loading ? (
 				<div className={styles.loader}>
 					<Loader />
 				</div>
@@ -98,7 +108,6 @@ export default function Gallery() {
 					))}
 				</div>
 			)}
-
 			<ControllerContainer>
 				<Sorting artworkCategory={ArtworkCategory.Gallery} />
 				<Pagination currentPage={page} onPageChange={handlePageChange} />

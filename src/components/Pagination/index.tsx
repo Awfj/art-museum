@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import styles from './styles.module.css';
 
 import { TOTAL_PAGES } from '@/constants/artworks';
+import { Status } from '@/types/api';
 import { RootState } from '@/types/store';
 
 type PaginationProps = {
@@ -17,6 +18,7 @@ export default function Pagination({
 	onPageChange,
 }: PaginationProps) {
 	const searching = useSelector((state: RootState) => state.artworks.searching);
+	const status = useSelector((state: RootState) => state.artworks.status);
 	const [pages, setPages] = useState<number[]>(
 		Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1)
 	);
@@ -28,7 +30,7 @@ export default function Pagination({
 		}
 	}, [currentPage, searching]);
 
-	const handlePrevPage = () => {
+	const handlePrevPage = useCallback(() => {
 		const prevPage = currentPage - 1;
 
 		if (prevPage < 1) {
@@ -39,42 +41,48 @@ export default function Pagination({
 			setPages((prev) => [prev[0] - 1, ...prev].slice(0, -1));
 		}
 		onPageChange(prevPage);
-	};
+	}, [currentPage, pages, onPageChange]);
 
-	const handleNextPage = () => {
+	const handleNextPage = useCallback(() => {
 		const nextPage = currentPage + 1;
 
 		if (nextPage > TOTAL_PAGES) {
 			setPages((prev) => [...prev, nextPage].slice(1));
 		}
 		onPageChange(nextPage);
-	};
+	}, [currentPage, onPageChange]);
 
-	function handleClick(number: number) {
-		onPageChange(number);
-	}
+	const handleClick = useCallback(
+		(number: number) => {
+			onPageChange(number);
+		},
+		[onPageChange]
+	);
+
+	const memoizedPages = useMemo(() => pages, [pages]);
+	const loading = status === Status.Loading;
 
 	return (
 		<div className={styles.pagination}>
 			<div className={styles['page-numbers']}>
 				{currentPage > 1 && (
-					<button onClick={handlePrevPage}>
+					<button onClick={handlePrevPage} disabled={loading}>
 						<ChevronLeft />
 					</button>
 				)}
 
-				{pages.map((number) => (
+				{memoizedPages.map((number) => (
 					<button
 						className={currentPage === number ? styles.active : ''}
 						key={number}
 						onClick={() => handleClick(number)}
-						disabled={number === currentPage}
+						disabled={number === currentPage || loading}
 					>
 						{number}
 					</button>
 				))}
 
-				<button onClick={handleNextPage}>
+				<button onClick={handleNextPage} disabled={loading}>
 					<ChevronRight />
 				</button>
 			</div>

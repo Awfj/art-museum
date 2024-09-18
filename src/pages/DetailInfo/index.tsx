@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { Suspense, useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
@@ -20,7 +20,10 @@ export default function DetailInfo() {
 	const goBack = useGoBack();
 	const { id } = useParams<{ id: string }>();
 	const dispatch: AppDispatch = useDispatch();
-	const cachedArtwork: Artwork = LocalStorageService.getItem(`artwork_${id}`);
+	const cachedArtwork: Artwork = useMemo(
+		() => LocalStorageService.getItem(`artwork_${id}`),
+		[id]
+	);
 	const artwork = useSelector((state: RootState) =>
 		getArtworkById(state.artworks, encodeURIComponent(id))
 	);
@@ -41,8 +44,16 @@ export default function DetailInfo() {
 		};
 	}, [artwork, cachedArtwork, id, dispatch]);
 
+	const handleGoBack = useCallback(() => {
+		goBack();
+	}, [goBack]);
+
 	if (loading && !cachedArtwork) {
-		return <LoadingScreen />;
+		return (
+			<Suspense fallback={<div>Loading...</div>}>
+				<LoadingScreen />
+			</Suspense>
+		);
 	}
 
 	if (error) {
@@ -59,7 +70,7 @@ export default function DetailInfo() {
 		<Page>
 			<div className={styles['detailes-info']}>
 				<div className={styles['image-container']}>
-					<img src={displayArtwork.image} alt="" />
+					<img src={displayArtwork.image} alt={displayArtwork.title} />
 					<Bookmark floaty artwork={displayArtwork} />
 				</div>
 
@@ -84,7 +95,7 @@ export default function DetailInfo() {
 							</p>
 						)}
 						<p>Public</p>
-						<TextButton onClick={goBack}>Go Back</TextButton>
+						<TextButton onClick={handleGoBack}>Go Back</TextButton>
 					</section>
 				</div>
 			</div>
