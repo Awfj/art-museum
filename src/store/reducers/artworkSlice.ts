@@ -1,4 +1,9 @@
 import {
+	ARTWORKS_PER_PAGE,
+	INITIAL_PAGE,
+	OTHER_WORKS_COUNT,
+} from '@/constants/artworks';
+import {
 	fetchArtworkById,
 	fetchArtworks,
 	searchArtworks,
@@ -7,7 +12,7 @@ import {
 	sortArtworksByTitleDesc,
 } from '@/store/actions/artworks';
 import { Status } from '@/types/api';
-import { Artwork } from '@/types/artwork';
+import { Artwork, ArtworkCategory } from '@/types/artwork';
 import { ArtworkState } from '@/types/store';
 import { sortArtworks } from '@/utils/artworks';
 import LocalStorageService from '@/utils/LocalStorageService';
@@ -19,10 +24,11 @@ const storedFavorites =
 const initialState: ArtworkState = {
 	artworks: [],
 	favorites: storedFavorites,
+	otherWorks: [],
 	searching: false,
 	nextArtworksUrl: null,
 	lastViewedArtwork: null,
-	page: 1,
+	page: INITIAL_PAGE,
 	status: Status.Idle,
 	error: null,
 };
@@ -65,11 +71,36 @@ export const artworkSlice = createSlice({
 				LocalStorageService.setItem('favorites', state.favorites);
 			})
 			// cases for sorting artworks
-			.addCase(sortArtworksByTitleAsc, (state) => {
-				sortArtworks(state, (a, b) => a.title.localeCompare(b.title));
+			.addCase(sortArtworksByTitleAsc, (state, action) => {
+				const compareFn = (a: Artwork, b: Artwork) =>
+					a.title.localeCompare(b.title);
+
+				switch (action.payload) {
+					case ArtworkCategory.Gallery:
+						sortArtworks(state, compareFn);
+						break;
+					case ArtworkCategory.OtherWorks:
+						state.otherWorks.sort(compareFn);
+						break;
+					case ArtworkCategory.Favorites:
+						state.favorites.sort(compareFn);
+						break;
+				}
 			})
-			.addCase(sortArtworksByTitleDesc, (state) => {
-				sortArtworks(state, (a, b) => b.title.localeCompare(a.title));
+			.addCase(sortArtworksByTitleDesc, (state, action) => {
+				const compareFn = (a: Artwork, b: Artwork) =>
+					b.title.localeCompare(a.title);
+				switch (action.payload) {
+					case ArtworkCategory.Gallery:
+						sortArtworks(state, compareFn);
+						break;
+					case ArtworkCategory.OtherWorks:
+						state.otherWorks.sort(compareFn);
+						break;
+					case ArtworkCategory.Favorites:
+						state.favorites.sort(compareFn);
+						break;
+				}
 			})
 			// cases for fetchArtworks
 			.addCase(fetchArtworks.pending, (state) => {
@@ -78,7 +109,14 @@ export const artworkSlice = createSlice({
 			.addCase(fetchArtworks.fulfilled, (state, action) => {
 				const [newArtworks, nextArtworksUrl] = action.payload;
 				state.status = Status.Succeeded;
-				state.artworks = [...state.artworks, ...newArtworks];
+
+				if (newArtworks.length > ARTWORKS_PER_PAGE) {
+					state.otherWorks = newArtworks.slice(0, OTHER_WORKS_COUNT);
+					state.artworks = newArtworks.slice(OTHER_WORKS_COUNT);
+				} else {
+					state.artworks = [...state.artworks, ...newArtworks];
+				}
+
 				state.nextArtworksUrl = nextArtworksUrl;
 			})
 			.addCase(fetchArtworks.rejected, (state, action) => {
