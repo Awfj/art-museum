@@ -1,10 +1,11 @@
 import path from 'path';
-import { defineConfig } from 'vite';
+import { defineConfig as defineViteConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
+import { configDefaults, defineConfig, mergeConfig } from 'vitest/config';
 
 import react from '@vitejs/plugin-react';
 
-export default defineConfig({
+const viteConfig = defineViteConfig({
 	plugins: [
 		react(),
 		svgr({
@@ -23,3 +24,15 @@ export default defineConfig({
 		},
 	},
 });
+
+export default mergeConfig(
+	viteConfig,
+	defineConfig({
+		test: {
+			globals: true,
+			environment: 'jsdom',
+			setupFiles: './vitest.setup.ts',
+			exclude: [...configDefaults.exclude, 'e2e/*'],
+		},
+	})
+);
