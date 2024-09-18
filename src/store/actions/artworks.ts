@@ -18,25 +18,29 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit';
 export const fetchArtworks = createAsyncThunk(
 	'artwork/fetchArtworks',
 	async (page: number, { getState }): Promise<[Artwork[], string]> => {
-		const state = getState() as RootState;
-		const {
-			artworks: storedArtworks,
-			nextArtworksUrl: initialNextArtworksUrl,
-		} = state.artworks;
-		const storedArtworkIds = new Set(
-			storedArtworks.map((artwork) => artwork.id)
-		);
-		const token = await getApiToken();
+		try {
+			const state = getState() as RootState;
+			const {
+				artworks: storedArtworks,
+				nextArtworksUrl: initialNextArtworksUrl,
+			} = state.artworks;
+			const storedArtworkIds = new Set(
+				storedArtworks.map((artwork) => artwork.id)
+			);
+			const token = await getApiToken();
 
-		const [data, nextArtworksUrl] = await fetchUniqueArtworks(
-			token,
-			storedArtworkIds,
-			initialNextArtworksUrl
-		);
+			const [data, nextArtworksUrl] = await fetchUniqueArtworks(
+				token,
+				storedArtworkIds,
+				initialNextArtworksUrl
+			);
 
-		const artworks = transformArtworks(data._embedded.artworks, page);
+			const artworks = transformArtworks(data._embedded.artworks, page);
 
-		return [artworks, nextArtworksUrl];
+			return [artworks, nextArtworksUrl];
+		} catch (error) {
+			throw new Error(`Error fetching artworks: ${error.message}`);
+		}
 	}
 );
 
@@ -46,42 +50,50 @@ export const searchArtworks = createAsyncThunk(
 		{ query, page }: { query?: string; page: number },
 		{ getState }
 	): Promise<[Artwork[], string]> => {
-		const state = getState() as RootState;
-		const {
-			artworks: storedArtworks,
-			nextArtworksUrl: initialNextArtworksUrl,
-		} = state.artworks;
-		const storedArtworkIds = new Set(
-			storedArtworks.map((artwork) => artwork.id)
-		);
-		const token = await getApiToken();
+		try {
+			const state = getState() as RootState;
+			const {
+				artworks: storedArtworks,
+				nextArtworksUrl: initialNextArtworksUrl,
+			} = state.artworks;
+			const storedArtworkIds = new Set(
+				storedArtworks.map((artwork) => artwork.id)
+			);
+			const token = await getApiToken();
 
-		const [data, nextArtworksUrl] = await fetchUniqueSearchResults(
-			token,
-			storedArtworkIds,
-			initialNextArtworksUrl,
-			query
-		);
+			const [data, nextArtworksUrl] = await fetchUniqueSearchResults(
+				token,
+				storedArtworkIds,
+				initialNextArtworksUrl,
+				query
+			);
 
-		const artworks = transformSearchResults(data._embedded.results, page);
+			const artworks = transformSearchResults(data._embedded.results, page);
 
-		return [artworks, nextArtworksUrl];
+			return [artworks, nextArtworksUrl];
+		} catch (error) {
+			throw new Error(`Error searching artworks: ${error.message}`);
+		}
 	}
 );
 
 export const fetchArtworkById = createAsyncThunk(
 	'artwork/fetchArtworkById',
 	async (id: string) => {
-		const token = await getApiToken();
-		const response = await fetchArtworkData(id, token);
+		try {
+			const token = await getApiToken();
+			const response = await fetchArtworkData(id, token);
 
-		if (!response.ok) {
-			throw new Error('Failed to fetch artwork');
+			if (!response.ok) {
+				throw new Error('Failed to fetch artwork');
+			}
+
+			const data: ArtworkResponse = await response.json();
+
+			return transformArtworkData(data);
+		} catch (error) {
+			throw new Error(`Error fetching artwork by id ${id}: ${error.message}`);
 		}
-
-		const data: ArtworkResponse = await response.json();
-
-		return transformArtworkData(data);
 	}
 );
 
