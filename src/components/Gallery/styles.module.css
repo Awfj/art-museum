@@ -2,7 +2,6 @@
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 2rem;
-	height: var(--card-height);
 }
 
 .loader {
@@ -25,13 +24,12 @@
 
 @media (max-width: 60rem) {
 	.cards {
-		grid-template-columns: repeat(2, auto);
+		grid-template-columns: repeat(1, auto);
 	}
 }
 
 @media (max-width: 40rem) {
 	.cards {
-		grid-template-columns: repeat(1, auto);
 		gap: 1rem;
 	}
 }

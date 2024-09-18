@@ -4,7 +4,7 @@
 	bottom: 0;
 	transform: translateX(-50%);
 	width: 86%;
-	height: 8.25rem;
+	height: var(--info-block-height);
 }
 
 .floaty.info-block {

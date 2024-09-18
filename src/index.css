@@ -30,6 +30,8 @@
 	--border-radius: 1rem;
 	--outline-width: 0.0625rem;
 	--section-gap: 7.5rem;
+	--gallery-image-height: 27.75rem;
+	--info-block-height: 9.625em;
 }
 
 * {
@@ -80,6 +82,7 @@ button {
 @media (max-width: 60rem) {
 	:root {
 		--section-gap: 5.625rem;
+		--gallery-image-height: 20rem;
 	}
 }
 
