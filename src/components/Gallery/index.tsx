@@ -9,7 +9,8 @@ import ControllerContainer from '@/components/ControllerContainer';
 import Loader from '@/components/Loader';
 import Pagination from '@/components/Pagination';
 import Sorting from '@/components/Sorting';
-import { ARTWORKS_PER_PAGE } from '@/constants/artworks';
+import { ARTWORKS_PER_PAGE, INITIAL_PAGE } from '@/constants/artworks';
+import { TABLET_MAX_WIDTH, TABLET_MIN_WIDTH } from '@/constants/breakpoints';
 import { fetchArtworks, searchArtworks } from '@/store/actions/artworks';
 import { setPage } from '@/store/reducers/artworkSlice';
 import { Status } from '@/types/api';
@@ -34,7 +35,7 @@ export default function Gallery() {
 		[artworks, page]
 	);
 	const currentWorks = useMemo(
-		() => artworks.slice(firstIndex, firstIndex + 3),
+		() => artworks.slice(firstIndex, firstIndex + ARTWORKS_PER_PAGE),
 		[artworks, firstIndex]
 	);
 
@@ -59,13 +60,14 @@ export default function Gallery() {
 	useEffect(() => {
 		const handleResize = () => {
 			const newArtworksPerPage =
-				window.innerWidth > 640 && window.innerWidth <= 960
+				window.innerWidth > TABLET_MIN_WIDTH &&
+				window.innerWidth <= TABLET_MAX_WIDTH
 					? ARTWORKS_PER_PAGE - 1
 					: ARTWORKS_PER_PAGE;
 
 			if (newArtworksPerPage !== artworksPerPage) {
 				setArtworksPerPage(newArtworksPerPage);
-				dispatch(setPage(1));
+				dispatch(setPage(INITIAL_PAGE));
 			}
 		};
 
