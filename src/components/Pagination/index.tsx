@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import styles from './styles.module.css';
 
 import { TOTAL_PAGES } from '@/constants/artworks';
+import { RootState } from '@/types/store';
 
 type PaginationProps = {
 	currentPage: number;
@@ -14,9 +16,17 @@ export default function Pagination({
 	currentPage,
 	onPageChange,
 }: PaginationProps) {
+	const searching = useSelector((state: RootState) => state.artworks.searching);
 	const [pages, setPages] = useState<number[]>(
 		Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1)
 	);
+
+	useEffect(() => {
+		if (searching && currentPage === 1) {
+			const newPages = Array.from({ length: TOTAL_PAGES }, (_, i) => i + 1);
+			setPages(newPages);
+		}
+	}, [currentPage, searching]);
 
 	const handlePrevPage = () => {
 		const prevPage = currentPage - 1;
